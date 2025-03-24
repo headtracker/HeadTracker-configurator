@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-sidenav-container {
+    height:100%;
+}
+
+mat-sidenav {
+    @apply bg-gray-300 !important;
+    @apply rounded-none !important;
+    @apply w-72 !important;
+}
+
+.expanded {
+    width: 250px;
+}
+
