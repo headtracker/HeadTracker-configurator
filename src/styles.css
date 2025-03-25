@@ -10,12 +10,7 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-    @apply bg-gray-300 !important;
+    @apply bg-slate-800 !important;
     @apply rounded-none !important;
     @apply w-72 !important;
 }
-
-.expanded {
-    width: 250px;
-}
-
