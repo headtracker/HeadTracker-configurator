@@ -7,4 +7,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./connect/connect.component').then((x) => x.ConnectComponent),
   },
+  {
+    path: 'firmware',
+    loadComponent: () =>
+      import('./firmware/firmware.component').then((x) => x.FirmwareComponent),
+  },
 ];

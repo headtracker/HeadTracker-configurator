@@ -6,7 +6,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { NgIf } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { ConnectionService } from './connect/connection.service';
 
 @Component({
@@ -20,6 +20,7 @@ import { ConnectionService } from './connect/connection.service';
     MatListModule,
     NgIf,
     RouterOutlet,
+    RouterLink,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
