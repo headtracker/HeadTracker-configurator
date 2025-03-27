@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'connect' },
+  { path: '', pathMatch: 'full', redirectTo: 'firmware' },
   {
     path: 'connect',
     loadComponent: () =>

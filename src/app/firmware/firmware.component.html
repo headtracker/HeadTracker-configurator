@@ -1,10 +1,40 @@
 <div class="flex flex-col items-center gap-4">
-  <div *ngIf="firmwareImage" class="shadow p-4 rounded-xl bg-white flex flex-col">
+  <div class="shadow p-4 rounded-xl bg-white flex flex-col w-96">
+    <!-- Select firmware button triggers the hidden button-->
+    <button class="mb-4" mat-raised-button (click)="fileInput.click()">Select firmware file (.bin)</button>
+    <input class="hidden" #fileInput type="file" accept=".bin" (change)="selectFirmwareFile($event)"/>
+
     <span class="text-lg font-medium leading-6 tracking-tight">Firmware: {{ filename }}</span>
-    <span class="text-sm font-medium text-green-700">Size: {{fileSize}} bites</span>
-    <button class="mt-4" mat-stroked-button >Flash firmware</button>
+    <span class="text-sm font-medium text-green-700">Size: {{ fileSize }} bites</span>
+    <button class="mt-4" [disabled]="!canFlash" (click)="flashFirmware()" mat-stroked-button>Flash firmware</button>
+    <span class="text-sm font-medium text-red-500" *ngIf="connectionService.port === null">
+      Select port first
+    </span>
+    <hr class="my-4" *ngIf="flashingComplete || flashingInProgress">
+    <!-- Firmware upload progress -->
+    <div class="flex flex-col">
+      <div *ngIf="flashingInProgress"
+           class="flex flex-row items-center text-lg font-medium leading-6 tracking-tight mb-2">
+        Flashing in progress
+        <mat-spinner class="ml-4" diameter="21"></mat-spinner>
+      </div>
+      <div *ngIf="flashingComplete"
+           class="flex flex-row items-center text-lg font-medium leading-6 tracking-tight mb-2 text-green-500">
+        Flashing complete
+        <mat-icon class="ml-4">done</mat-icon>
+      </div>
+      <ng-container *ngIf="totalPages && uploadedPages">
+        <span class="text-sm font-medium text-gray-500">Page: {{ uploadedPages }} / {{ totalPages }}</span>
+        <mat-progress-bar
+          class="my-2"
+          mode="determinate"
+          [value]="totalPages > 0 ? (uploadedPages / totalPages) * 100 : 0">
+        </mat-progress-bar>
+      </ng-container>
+      <div *ngFor="let message of statusMessages"
+           class="font-mono font-light text-xs border-b border-dashed mb-2 border-gray-200">{{ message }}
+      </div>
+    </div>
   </div>
-  <button mat-flat-button (click)="selectDevice()"> Select device</button>
-  <button mat-flat-button (click)="selectFirmware()"> Select firmware</button>
 </div>
 

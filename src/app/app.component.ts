@@ -7,7 +7,8 @@ import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { NgIf } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ConnectionService } from './connect/connection.service';
+import { FooterComponent } from '@app/footer/footer.component';
+import { ConnectionService } from '@app/connect/connection.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { ConnectionService } from './connect/connection.service';
     NgIf,
     RouterOutlet,
     RouterLink,
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -34,7 +36,9 @@ export class AppComponent implements OnInit {
   readonly connectionService: ConnectionService = inject(ConnectionService);
   readonly observer: BreakpointObserver = inject(BreakpointObserver);
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.connectionService.preloadPort();
+
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
       if (screenSize.matches) {
         this.isMobile = true;

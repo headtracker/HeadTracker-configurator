@@ -40,12 +40,11 @@
           <mat-icon class="text-red-400">bluetooth_disabled</mat-icon>
         </button>
       </div>
-      <div *ngIf="connectionService.port">
-          {{connectionService.port.getInfo().usbVendorId}}
-      </div>
     </mat-toolbar>
     <div class="m-4 flex flex-col items-stretch">
       <router-outlet></router-outlet>
     </div>
+    <app-footer />
+
   </mat-sidenav-content>
 </mat-sidenav-container>

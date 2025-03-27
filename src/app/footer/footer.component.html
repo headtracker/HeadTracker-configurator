@@ -1,0 +1,10 @@
+<div class="flex flex-row items-center h-11 gap-4">
+  <button mat-flat-button aria-label="Select port" (click)="selectPort()">
+    Select port
+  </button>
+  <div *ngIf="connectionService.port" class="flex flex-col">
+    <div class="font-medium">{{ getVendorName(connectionService.port.getInfo().usbVendorId) ?? "Unknown vendor" }}</div>
+    <div class="text-gray-500 text-sm">VendorId: {{connectionService.port.getInfo().usbVendorId}}, ProductId: {{connectionService.port.getInfo().usbProductId}}</div>
+  </div>
+</div>
+
