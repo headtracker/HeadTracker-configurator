@@ -169,9 +169,9 @@ export class FirmwareComponent {
     if (this.connectionService.port) {
       let serialPort = this.connectionService.port;
       console.info('Entering bootloader mode');
-      // close the connection before we can try to open a port;
+      // some magic with sleeps. Otherwise it wont reboot in bootloader mode
       await this.closePort();
-
+      await sleep(350);
       // Enter bootloader mode
       try {
         await serialPort.open({
@@ -182,7 +182,7 @@ export class FirmwareComponent {
           flowControl: 'hardware',
           baudRate: 1200,
         });
-        await sleep(50);
+        await sleep(350);
       } finally {
         await this.closePort();
         await sleep(rebootWaitMs);

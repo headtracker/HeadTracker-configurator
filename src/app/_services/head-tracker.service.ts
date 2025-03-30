@@ -19,7 +19,9 @@ export class HeadTrackerService {
   constructor() {
     this.connectionService.$connectedPort.subscribe(async (port) => {
       if (port) {
-        await this.initConnection(port);
+        // Only connect if the port is the one we want, don't want to connect if it's in bootloader mode
+        if (port.getInfo().usbProductId === 0x805a)
+          await this.initConnection(port);
       } else {
         await this.closeConnection();
       }
