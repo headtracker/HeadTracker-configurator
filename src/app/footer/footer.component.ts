@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { ConnectionService } from '@app/connect/connection.service';
+import { ConnectionService } from '@app/_services/connection.service';
 import { NgIf } from '@angular/common';
 import {  getUsbVendorById } from 'usb-vendor-ids';
 

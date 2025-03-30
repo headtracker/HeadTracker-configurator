@@ -25,7 +25,9 @@
     ],
     "paths": {
       "@app/*": ["./src/app/*"],
+      "@libs/*": ["./src/libs/*"],
       "@bossa-web/*": ["./src/libs/bossa-web/*"],
+
     }
   },
   "angularCompilerOptions": {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ConnectionService } from '@app/connect/connection.service';
+import { ConnectionService } from '@app/_services/connection.service';
 import { MatButton } from '@angular/material/button';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { SamBA } from '@bossa-web/src/samba';
 import { Device } from '@bossa-web/src/device';
 import { sleep } from '@bossa-web/src/util';
+import { HeadTrackerService } from '@app/_services/head-tracker.service';
 
 @Component({
   selector: 'app-firmware',
@@ -18,6 +19,7 @@ import { sleep } from '@bossa-web/src/util';
 })
 export class FirmwareComponent {
   readonly connectionService: ConnectionService = inject(ConnectionService);
+  readonly HTService: HeadTrackerService = inject(HeadTrackerService);
 
   private samba: SamBA | null = null;
   private device: Device | null = null;
@@ -64,7 +66,10 @@ export class FirmwareComponent {
       // Connect the device first
       try {
         this.statusMessages.push('Connecting to device');
-        await this.connectDevice();
+        // We have to close HeadTracker connection first before we can connect to the bootloader
+        await this.HTService.closeConnection();
+        await this.closePort();
+        await this.attachPort();
       } catch (e) {
         this.statusMessages.push(`Failed to connect to device: ${e}`);
         this.flashingInProgress = false;
@@ -137,6 +142,26 @@ export class FirmwareComponent {
     return false;
   }
 
+  private async attachPort() {
+    if (this.connectionService.port === null) throw new Error('No port selected');
+
+    this.isInBootloader = false;
+
+    let info = this.connectionService.port.getInfo();
+
+    // The chip is already in bootloader
+    if (info.usbVendorId == 0x2341 && info.usbProductId == 0x005a) {
+      await this.connectBootloader();
+      return;
+    }
+
+    // The chip is in program mode we need to restart it in bootloader mode
+    if (info.usbVendorId == 0x2341 && info.usbProductId == 0x805a) {
+      // Enter bootloader mode
+      await this.enterBootloader();
+    }
+  }
+
   // reset connection and enter bootloader
   async enterBootloader() {
     let rebootWaitMs = 1000;
@@ -144,7 +169,7 @@ export class FirmwareComponent {
     if (this.connectionService.port) {
       let serialPort = this.connectionService.port;
       console.info('Entering bootloader mode');
-
+      // close the connection before we can try to open a port;
       await this.closePort();
 
       // Enter bootloader mode
@@ -176,29 +201,7 @@ export class FirmwareComponent {
         await this.connectionService.selectSerialPort();
       }
 
-      await this.connectDevice();
-    }
-  }
-
-  async connectDevice() {
-    if (this.connectionService.port === null) throw new Error('No port selected');
-    await this.attachPort(this.connectionService.port);
-  }
-
-  private async attachPort(serialPort: SerialPort) {
-    this.isInBootloader = false;
-
-    let info = serialPort.getInfo();
-
-    // Are we already in the bootloader?
-    if (info.usbVendorId == 0x2341 && info.usbProductId == 0x005a) {
-      await this.connectBootloader(serialPort);
-      return;
-    }
-
-    if (info.usbVendorId == 0x2341 && info.usbProductId == 0x805a) {
-      // Enter bootloader mode
-      await this.enterBootloader();
+      await this.attachPort();
     }
   }
 
@@ -213,18 +216,19 @@ export class FirmwareComponent {
     }
   }
 
-  private async connectBootloader(serialPort: SerialPort) {
-    this.samba = new SamBA(serialPort, {
+  private async connectBootloader() {
+    await this.closePort();
+
+    this.samba = new SamBA(this.connectionService.port!, {
       logger: console,
       debug: true,
       trace: false,
     });
 
-    this.connectionService.port = serialPort;
     let theSamba = this.samba;
     await theSamba.connect(1000);
 
-    var dev = new Device(theSamba);
+    const dev = new Device(theSamba);
     await dev.create();
 
     this.device = dev;

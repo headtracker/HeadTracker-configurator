@@ -12,10 +12,25 @@
     </div>
 
     <div class="flex flex-col p-4 gap-4">
+      <button mat-raised-button [routerLink]="['settings']"> <mat-icon>settings</mat-icon> Settings </button>
       <button mat-raised-button [routerLink]="['firmware']"> <mat-icon>grid_4x4</mat-icon> Firmware</button>
-      <button mat-raised-button> <mat-icon>autorenew</mat-icon> Reboot</button>
-      <button mat-raised-button> <mat-icon>biotech</mat-icon> Calibrate</button>
-      <button mat-raised-button> <mat-icon>gps_fixed</mat-icon> Reset Center</button>
+      <button mat-raised-button (click)="resetHeadTracker()"> <mat-icon>autorenew</mat-icon> Reboot</button>
+<!--      <button mat-raised-button> <mat-icon>biotech</mat-icon> Calibrate</button>-->
+      <button mat-raised-button (click)="resetCenter()"> <mat-icon>gps_fixed</mat-icon> Reset Center</button>
+    </div>
+    <div *ngIf="HTService.connected">
+      <div class="flex flex-col p-4 gap-4">
+        <div class="text-green-400 font-medium uppercase text-sm text-center">Connected</div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Firmware version <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.firmwareVersion }}</div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Hardware <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.hardwareVersion }}</div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Git version <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.gitVersion }}</div>
+        </div>
+      </div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content class="bg-gray-100">
@@ -41,10 +56,9 @@
         </button>
       </div>
     </mat-toolbar>
-    <div class="m-4 flex flex-col items-stretch">
+    <div class="m-4 pb-20 flex flex-col items-stretch">
       <router-outlet></router-outlet>
     </div>
     <app-footer />
-
   </mat-sidenav-content>
 </mat-sidenav-container>

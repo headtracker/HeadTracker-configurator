@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'firmware' },
+  { path: '', pathMatch: 'full', redirectTo: 'settings' },
   {
-    path: 'connect',
+    path: 'settings',
     loadComponent: () =>
-      import('./connect/connect.component').then((x) => x.ConnectComponent),
+      import('./settings/settings.component').then((x) => x.SettingsComponent),
   },
   {
     path: 'firmware',
