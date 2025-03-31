@@ -51,6 +51,9 @@ export class HeadTrackerService {
       panout: true,
       rollout: true,
       tiltout: true,
+      panoff: true,
+      rolloff: true,
+      tiltoff: true,
     });
   }
 

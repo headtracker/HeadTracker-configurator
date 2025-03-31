@@ -1,0 +1,93 @@
+<form [formGroup]="axisForm" class="flex flex-col">
+  <div class="flex flex-row content-between gap-4">
+    <span class="w-8">&nbsp;</span>
+    <div class="w-1/12 text-center">Value</div>
+    <div class="w-2/12 text-center">Gain</div>
+    <div class="w-32 text-center">Channel</div>
+    <div class="w-2/12 text-center">Reverse</div>
+  </div>
+  <!-- TILT -->
+  <div formGroupName="tilt" class="flex flex-row items-center gap-4">
+    <div class="w-8 text-right">Tilt</div>
+    <!-- IMU value -->
+    <div class="w-1/12 text-center rounded-md border p-2">
+      <span class=" whitespace-nowrap">{{ tilt() }}&deg;</span>
+    </div>
+    <!-- Gain slider -->
+    <div class="w-2/12 flex flex-col">
+      <mat-slider class="w-full"  max="35" min="0.01" >
+        <input matSliderThumb formControlName="gain">
+      </mat-slider>
+    </div>
+
+    <!-- Channel selector -->
+    <mat-form-field class="w-32" appearance="outline" >
+      <mat-select formControlName="channel">
+        <mat-option [value]="0">Off</mat-option>
+        <mat-option value="1">Ch1</mat-option>
+        <mat-option value="2">Ch2</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Reverse checkbox -->
+    <div class="w-2/12 text-center">
+      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    </div>
+  </div>
+  <!--  ROLL -->
+  <div formGroupName="roll" class="flex flex-row items-center gap-4">
+    <div class="w-8 text-right">Roll</div>
+    <!-- IMU value -->
+    <div class="w-1/12 text-center rounded-md border p-2">
+      <span class=" whitespace-nowrap">{{ roll() }} &deg;</span>
+    </div>
+    <!-- Gain slider -->
+    <div class="w-2/12 flex flex-col">
+      <mat-slider class="w-full"  max="35" min="0.01" >
+        <input matSliderThumb formControlName="gain">
+      </mat-slider>
+    </div>
+
+    <!-- Channel selector -->
+    <mat-form-field class="w-32" appearance="outline" >
+      <mat-select formControlName="channel">
+        <mat-option [value]="0">Off</mat-option>
+        <mat-option value="1">Ch1</mat-option>
+        <mat-option value="2">Ch2</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Reverse checkbox -->
+    <div class="w-2/12 text-center">
+      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    </div>
+  </div>
+  <!--  PAN -->
+  <div formGroupName="pan" class="flex flex-row items-center gap-4">
+    <div class="w-8 text-right">Pan</div>
+    <!-- IMU value -->
+    <div class="w-1/12 text-center rounded-md border p-2">
+      <span class=" whitespace-nowrap">{{ pan() }} &deg;</span>
+    </div>
+    <!-- Gain slider -->
+    <div class="w-2/12 flex flex-col">
+      <mat-slider class="w-full" max="35" min="0.01" >
+        <input matSliderThumb formControlName="gain">
+      </mat-slider>
+    </div>
+
+    <!-- Channel selector -->
+    <mat-form-field class="w-32" appearance="outline" >
+      <mat-select formControlName="channel">
+        <mat-option [value]="0">Off</mat-option>
+        <mat-option value="1">Ch1</mat-option>
+        <mat-option value="2">Ch2</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Reverse checkbox -->
+    <div class="w-2/12 text-center">
+      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    </div>
+  </div>
+</form>

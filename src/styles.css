@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  --mat-form-field-container-height: 38px;
+  --mat-form-field-container-vertical-padding: 8px;
+}
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }
 

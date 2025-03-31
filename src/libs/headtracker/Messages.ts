@@ -11,5 +11,8 @@ export namespace Messages {
     panout: number;
     tiltout: number;
     rollout: number;
+    panoff: number;
+    tiltoff: number;
+    rolloff: number;
   }
 }
