@@ -102,13 +102,8 @@ export class OutputComponent implements OnInit, OnDestroy {
     interaction: {
       intersect: false,
     },
+    events: [],
     animation: false,
-    plugins:{
-      title: {
-        display: true,
-        text: 'Graph - Local Board',
-      }
-    },
     scales: {
       x: {
         type: 'linear',
