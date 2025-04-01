@@ -22,7 +22,7 @@ jobs:
       run: npm ci
 
     - name: Build Angular project
-      run: npm run build
+      run: npm run build -- --base-href /HeadTracker_WebUI/ --deploy-url=https://reediktuuling.com/HeadTracker_WebUI/
 
     - name: Upload static files as artifact
       id: deployment
