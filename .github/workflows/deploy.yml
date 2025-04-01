@@ -24,6 +24,12 @@ jobs:
     - name: Build Angular project
       run: npm run build
 
+    - name: Upload static files as artifact
+      id: deployment
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: dist/
+
   deploy:
     # Add a dependency to the build job
     needs: build
