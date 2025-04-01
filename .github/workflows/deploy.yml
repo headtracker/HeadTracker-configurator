@@ -28,7 +28,7 @@ jobs:
       id: deployment
       uses: actions/upload-pages-artifact@v3
       with:
-        path: dist/
+        path: dist/headtracker-webui/browser
 
   deploy:
     # Add a dependency to the build job
