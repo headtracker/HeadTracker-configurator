@@ -1,0 +1,28 @@
+<!-- Inputs -->
+<ng-content></ng-content>
+
+<!-- Track -->
+<div class="mdc-slider__track">
+  <div class="mdc-slider__track--inactive"></div>
+  <div class="mdc-slider__track--active">
+    <div #trackActive class="mdc-slider__track--active_fill"></div>
+  </div>
+</div>
+
+<tri-slider-visual-thumb
+  [discrete]="discrete"
+  [thumbPosition]="_TriThumb.START"
+  [valueIndicatorText]="startValueIndicatorText">
+</tri-slider-visual-thumb>
+
+<tri-slider-visual-thumb
+  [discrete]="discrete"
+  [thumbPosition]="_TriThumb.MID"
+  [valueIndicatorText]="midValueIndicatorText">
+</tri-slider-visual-thumb>
+
+<tri-slider-visual-thumb
+  [discrete]="discrete"
+  [thumbPosition]="_TriThumb.END"
+  [valueIndicatorText]="endValueIndicatorText">
+</tri-slider-visual-thumb>

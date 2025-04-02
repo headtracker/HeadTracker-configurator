@@ -6,6 +6,7 @@
 :root {
   --mat-form-field-container-height: 38px;
   --mat-form-field-container-vertical-padding: 8px;
+  --mdc-slider-inactive-track-color: #5b9a17;
 }
 
 

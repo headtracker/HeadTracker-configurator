@@ -1,27 +1,37 @@
 <form [formGroup]="axisForm" class="flex flex-col">
-  <div class="flex flex-row content-between gap-4">
+  <div class="flex flex-row content-between gap-6">
     <span class="w-8">&nbsp;</span>
     <div class="w-1/12 text-center">Value</div>
     <div class="w-2/12 text-center">Gain</div>
+    <div class="w-4/12 text-center">Range</div>
     <div class="w-32 text-center">Channel</div>
-    <div class="w-2/12 text-center">Reverse</div>
+    <div class="w-16 text-center">Reverse</div>
   </div>
   <!-- TILT -->
-  <div formGroupName="tilt" class="flex flex-row items-center gap-4">
+  <div formGroupName="tilt" class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Tilt</div>
     <!-- IMU value -->
     <div class="w-1/12 text-center rounded-md border p-2">
-      <span class=" whitespace-nowrap">{{ tilt() }}&deg;</span>
+      <span class=" whitespace-nowrap">{{ tilt() }} &deg;</span>
     </div>
     <!-- Gain slider -->
     <div class="w-2/12 flex flex-col">
-      <mat-slider class="w-full"  max="35" min="0.01" >
+      <mat-slider discrete class="w-full" [max]="Constants.MAX_GAIN" [min]="Constants.MIN_GAIN">
         <input matSliderThumb formControlName="gain">
       </mat-slider>
     </div>
 
+    <!-- Range selector -->
+    <div class="w-4/12 flex flex-col">
+      <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
+        <input formControlName="rangeMin" triSliderStartThumb>
+        <input formControlName="rangeMid" triSliderMidThumb>
+        <input formControlName="rangeEnd" triSliderEndThumb>
+      </tri-slider>
+    </div>
+
     <!-- Channel selector -->
-    <mat-form-field class="w-32" appearance="outline" >
+    <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="channel">
         <mat-option [value]="0">Off</mat-option>
         <mat-option value="1">Ch1</mat-option>
@@ -30,12 +40,12 @@
     </mat-form-field>
 
     <!-- Reverse checkbox -->
-    <div class="w-2/12 text-center">
-      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    <div class="w-16 text-center">
+      <mat-checkbox formControlName="invert"></mat-checkbox>
     </div>
   </div>
   <!--  ROLL -->
-  <div formGroupName="roll" class="flex flex-row items-center gap-4">
+  <div formGroupName="roll" class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Roll</div>
     <!-- IMU value -->
     <div class="w-1/12 text-center rounded-md border p-2">
@@ -43,13 +53,22 @@
     </div>
     <!-- Gain slider -->
     <div class="w-2/12 flex flex-col">
-      <mat-slider class="w-full"  max="35" min="0.01" >
+      <mat-slider discrete class="w-full" [max]="Constants.MAX_GAIN" [min]="Constants.MIN_GAIN">
         <input matSliderThumb formControlName="gain">
       </mat-slider>
     </div>
 
+    <!-- Range selector -->
+    <div class="w-4/12 flex flex-col">
+      <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
+        <input formControlName="rangeMin" triSliderStartThumb>
+        <input formControlName="rangeMid" triSliderMidThumb>
+        <input formControlName="rangeEnd" triSliderEndThumb>
+      </tri-slider>
+    </div>
+
     <!-- Channel selector -->
-    <mat-form-field class="w-32" appearance="outline" >
+    <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="channel">
         <mat-option [value]="0">Off</mat-option>
         <mat-option value="1">Ch1</mat-option>
@@ -58,12 +77,12 @@
     </mat-form-field>
 
     <!-- Reverse checkbox -->
-    <div class="w-2/12 text-center">
-      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    <div class="w-16 text-center">
+      <mat-checkbox formControlName="invert"></mat-checkbox>
     </div>
   </div>
   <!--  PAN -->
-  <div formGroupName="pan" class="flex flex-row items-center gap-4">
+  <div formGroupName="pan" class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Pan</div>
     <!-- IMU value -->
     <div class="w-1/12 text-center rounded-md border p-2">
@@ -71,13 +90,21 @@
     </div>
     <!-- Gain slider -->
     <div class="w-2/12 flex flex-col">
-      <mat-slider class="w-full" max="35" min="0.01" >
+      <mat-slider discrete class="w-full" [max]="Constants.MAX_GAIN" [min]="Constants.MIN_GAIN">
         <input matSliderThumb formControlName="gain">
       </mat-slider>
     </div>
+    <!-- Range selector -->
+    <div class="w-4/12 flex flex-col">
+      <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
+        <input formControlName="rangeMin" triSliderStartThumb>
+        <input formControlName="rangeMid" triSliderMidThumb>
+        <input formControlName="rangeEnd" triSliderEndThumb>
+      </tri-slider>
+    </div>
 
     <!-- Channel selector -->
-    <mat-form-field class="w-32" appearance="outline" >
+    <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="channel">
         <mat-option [value]="0">Off</mat-option>
         <mat-option value="1">Ch1</mat-option>
@@ -86,8 +113,8 @@
     </mat-form-field>
 
     <!-- Reverse checkbox -->
-    <div class="w-2/12 text-center">
-      <mat-checkbox  formControlName="invert"></mat-checkbox>
+    <div class="w-16 text-center">
+      <mat-checkbox formControlName="invert"></mat-checkbox>
     </div>
   </div>
 </form>

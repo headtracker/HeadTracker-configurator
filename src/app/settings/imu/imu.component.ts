@@ -8,11 +8,23 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { TriSlider, TriSliderRangeThumb } from '@libs/tri-slider';
+import { Constants } from '@libs/headtracker/Settings';
 
 @Component({
   selector: 'app-imu',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormField, MatSlider, MatSliderThumb, MatSelect, MatOption, MatCheckbox],
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatSlider,
+    MatSliderThumb,
+    MatSelect,
+    MatOption,
+    MatCheckbox,
+    TriSlider,
+    TriSliderRangeThumb,
+  ],
   templateUrl: './imu.component.html',
   encapsulation: ViewEncapsulation.None,
   styles: `
@@ -33,19 +45,28 @@ export class ImuComponent implements OnInit {
 
   axisForm = this.formBuilder.group({
     tilt: this.formBuilder.group({
-      gain: [0.01],
+      gain: [5],
       channel: [0],
       invert: [false],
+      rangeMin: [Constants.DEF_MIN_PWM],
+      rangeMid: [Constants.PPM_CENTER],
+      rangeEnd: [Constants.DEF_MAX_PWM],
     }),
     roll: this.formBuilder.group({
-      gain: [0.01],
+      gain: [5],
       channel: [0],
       invert: [false],
+      rangeMin: [Constants.DEF_MIN_PWM],
+      rangeMid: [Constants.PPM_CENTER],
+      rangeEnd: [Constants.DEF_MAX_PWM],
     }),
     pan: this.formBuilder.group({
-      gain: [0.01],
+      gain: [5],
       channel: [0],
       invert: [false],
+      rangeMin: [Constants.DEF_MIN_PWM],
+      rangeMid: [Constants.PPM_CENTER],
+      rangeEnd: [Constants.DEF_MAX_PWM],
     }),
   });
 
@@ -61,4 +82,6 @@ export class ImuComponent implements OnInit {
         this.pan.set(Math.round((message.panoff + Number.EPSILON) * 100) / 100);
       });
   }
+
+  protected readonly Constants = Constants;
 }
