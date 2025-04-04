@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
     if (this.isMobile) {
       this.sidenav.toggle();
     } else {
-      this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
+      this.sidenav.toggle(); // On desktop/tablet, the menu can never be fully closed
     }
   }
 
