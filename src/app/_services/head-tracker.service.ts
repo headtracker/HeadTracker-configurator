@@ -10,6 +10,7 @@ import { SubSink } from 'subsink';
 })
 export class HeadTrackerService implements OnDestroy {
   private subs = new SubSink();
+  private initialized = false;
   readonly connectionService: ConnectionService = inject(ConnectionService);
   private readonly tracker: HeadTracker = new HeadTracker();
 
@@ -36,6 +37,10 @@ export class HeadTrackerService implements OnDestroy {
   private async initConnection(port: SerialPort) {
     await this.tracker.connect(port);
     this.connected = true;
+
+    if (this.initialized) {
+      return;
+    }
 
     this.subs.sink = this.$messages.subscribe((message) => {
       // console.info('Received message:', message);
@@ -71,10 +76,26 @@ export class HeadTrackerService implements OnDestroy {
       rolloff: true,
       tiltoff: true,
     });
+
+    this.initialized = true;
   }
 
   get $messages() {
     return this.tracker.$messages;
+  }
+
+  public async openConnection() {
+    if (this.connectionService.port) {
+      if(!this.initialized) {
+        await this.initConnection(this.connectionService.port)
+        return;
+      }
+
+      await this.tracker.connect(this.connectionService.port);
+      this.connected = true;
+    } else {
+      console.error('No port available to connect to.');
+    }
   }
 
   public async closeConnection() {
