@@ -12,6 +12,9 @@ import { TriSlider, TriSliderRangeThumb } from '@libs/tri-slider';
 import { Constants } from '@libs/headtracker/Settings';
 import { SubSink } from 'subsink';
 import { NgForOf } from '@angular/common';
+import { MatButtonModule, MatFabButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-imu',
@@ -27,6 +30,9 @@ import { NgForOf } from '@angular/common';
     TriSlider,
     TriSliderRangeThumb,
     NgForOf,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
   ],
   templateUrl: './imu.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -253,19 +259,97 @@ export class ImuComponent implements OnInit, OnDestroy {
     this.subs.sink = combineLatest([
       this.axisForm.controls.tlt_reverse.valueChanges.pipe(startWith(null)),
       this.axisForm.controls.rll_reverse.valueChanges.pipe(startWith(null)),
-      this.axisForm.controls.pan_reverse.valueChanges.pipe(startWith(null))
+      this.axisForm.controls.pan_reverse.valueChanges.pipe(startWith(null)),
     ]).subscribe(async ([tilt, roll, pan]) => {
-        // If all values are null, do nothing - means the subscription initialized
-        if(tilt === null && roll === null && pan === null) {
-            return;
-        }
+      // If all values are null, do nothing - means the subscription initialized
+      if (tilt === null && roll === null && pan === null) {
+        return;
+      }
 
-        const tiltVal = this.axisForm.controls.tlt_reverse.value ? 1 : 0;
-        const rollVal = this.axisForm.controls.rll_reverse.value ? 2 : 0;
-        const panVal = this.axisForm.controls.pan_reverse.value ? 4 : 0;
+      const tiltVal = this.axisForm.controls.tlt_reverse.value ? 1 : 0;
+      const rollVal = this.axisForm.controls.rll_reverse.value ? 2 : 0;
+      const panVal = this.axisForm.controls.pan_reverse.value ? 4 : 0;
 
-        await this.HTService.setValues({ servoreverse: tiltVal + rollVal + panVal });
-    })
+      await this.HTService.setValues({ servoreverse: tiltVal + rollVal + panVal });
+    });
+  }
+
+  defaultValues(axis: 'tilt'|'roll'|'pan') {
+    switch (axis) {
+      case 'tilt':
+        this.axisForm.patchValue({
+          tlt_min: Constants.DEF_MIN_PWM,
+          tlt_cnt: Constants.PPM_CENTER,
+          tlt_max: Constants.DEF_MAX_PWM,
+        });
+        break;
+      case 'roll':
+        this.axisForm.patchValue({
+          rll_min: Constants.DEF_MIN_PWM,
+          rll_cnt: Constants.PPM_CENTER,
+          rll_max: Constants.DEF_MAX_PWM,
+        });
+        break;
+      case 'pan':
+        this.axisForm.patchValue({
+          pan_min: Constants.DEF_MIN_PWM,
+          pan_cnt: Constants.PPM_CENTER,
+          pan_max: Constants.DEF_MAX_PWM,
+        });
+        break;
+    }
+  }
+
+  maxValues(axis: 'tilt'|'roll'|'pan') {
+    switch (axis) {
+      case 'tilt':
+        this.axisForm.patchValue({
+          tlt_min: Constants.MIN_PWM,
+          tlt_cnt: Constants.PPM_CENTER,
+          tlt_max: Constants.MAX_PWM,
+        });
+        break;
+      case 'roll':
+        this.axisForm.patchValue({
+          rll_min: Constants.MIN_PWM,
+          rll_cnt: Constants.PPM_CENTER,
+          rll_max: Constants.MAX_PWM,
+        });
+        break;
+      case 'pan':
+        this.axisForm.patchValue({
+          pan_min: Constants.MIN_PWM,
+          pan_cnt: Constants.PPM_CENTER,
+          pan_max: Constants.MAX_PWM,
+        });
+        break;
+    }
+  }
+
+  reCenter(axis: 'tilt'|'roll'|'pan') {
+    switch (axis) {
+      case 'tilt':
+        const minVal = this.axisForm.controls.tlt_min.value!;
+        const maxVal = this.axisForm.controls.tlt_max.value!;
+        this.axisForm.patchValue({
+          tlt_cnt: (maxVal + minVal) / 2,
+        });
+        break;
+      case 'roll':
+        const minValR = this.axisForm.controls.rll_min.value!;
+        const maxValR = this.axisForm.controls.rll_max.value!;
+        this.axisForm.patchValue({
+          rll_cnt: (maxValR + minValR) / 2,
+        });
+        break;
+      case 'pan':
+        const minValP = this.axisForm.controls.pan_min.value!;
+        const maxValP = this.axisForm.controls.pan_max.value!;
+        this.axisForm.patchValue({
+          pan_cnt: (maxValP + minValP) / 2,
+        });
+        break;
+    }
   }
 
   ngOnDestroy() {

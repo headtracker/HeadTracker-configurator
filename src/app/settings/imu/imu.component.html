@@ -4,6 +4,7 @@
     <div class="w-1/12 text-center">Value</div>
     <div class="w-2/12 text-center">Gain</div>
     <div class="w-4/12 text-center">Range</div>
+    <div class="w-16 text-center -ml-8 ">&nbsp;</div>
     <div class="w-32 text-center">Channel</div>
     <div class="w-16 text-center">Reverse</div>
   </div>
@@ -29,12 +30,23 @@
         <input formControlName="tlt_max" triSliderEndThumb>
       </tri-slider>
     </div>
+    <div class="w-16 text-center -ml-8 ">
+      <button mat-mini-fab [matMenuTriggerFor]="tlt_menu">
+        <mat-icon>settings_input_composite</mat-icon>
+      </button>
+      <mat-menu #tlt_menu="matMenu">
+        <button mat-menu-item (click)="defaultValues('tilt')">Default values</button>
+        <button mat-menu-item (click)="maxValues('tilt')">Max values</button>
+        <button mat-menu-item (click)="reCenter('tilt')">Re-Center</button>
+      </mat-menu>
+    </div>
+
 
     <!-- Channel selector -->
     <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="tltch">
         <mat-option [value]="-1">Off</mat-option>
-        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{i+1}}</mat-option>
+        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -65,12 +77,22 @@
         <input formControlName="rll_max" triSliderEndThumb>
       </tri-slider>
     </div>
+    <div class="w-16 text-center -ml-8 ">
+      <button mat-mini-fab [matMenuTriggerFor]="rll_menu">
+        <mat-icon>settings_input_composite</mat-icon>
+      </button>
+      <mat-menu #rll_menu="matMenu">
+        <button mat-menu-item (click)="defaultValues('roll')">Default values</button>
+        <button mat-menu-item (click)="maxValues('roll')">Max values</button>
+        <button mat-menu-item (click)="reCenter('roll')">Re-Center</button>
+      </mat-menu>
+    </div>
 
     <!-- Channel selector -->
     <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="rllch">
         <mat-option [value]="-1">Off</mat-option>
-        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{i+1}}</mat-option>
+        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -100,12 +122,22 @@
         <input formControlName="pan_max" triSliderEndThumb>
       </tri-slider>
     </div>
+    <div class="w-16 text-center -ml-8 ">
+      <button mat-mini-fab [matMenuTriggerFor]="pan_menu">
+        <mat-icon>settings_input_composite</mat-icon>
+      </button>
+      <mat-menu #pan_menu="matMenu">
+        <button mat-menu-item (click)="defaultValues('pan')">Default values</button>
+        <button mat-menu-item (click)="maxValues('pan')">Max values</button>
+        <button mat-menu-item (click)="reCenter('pan')">Re-Center</button>
+      </mat-menu>
+    </div>
 
     <!-- Channel selector -->
     <mat-form-field class="w-32 px-4" appearance="outline">
       <mat-select formControlName="panch">
         <mat-option [value]="-1">Off</mat-option>
-        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{i+1}}</mat-option>
+        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
     </mat-form-field>
 
