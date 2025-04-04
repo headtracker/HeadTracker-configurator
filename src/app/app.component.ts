@@ -6,10 +6,11 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { NgIf } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FooterComponent } from '@app/footer/footer.component';
 import { ConnectionService } from '@app/_services/connection.service';
 import { HeadTrackerService } from '@app/_services/head-tracker.service';
+import { getUsbVendorById } from 'usb-vendor-ids';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import { HeadTrackerService } from '@app/_services/head-tracker.service';
     RouterOutlet,
     RouterLink,
     FooterComponent,
+    RouterLinkActive,
   ],
   templateUrl: './app.component.html',
 })
@@ -69,11 +71,19 @@ export class AppComponent implements OnInit {
     }
   }
 
+  async selectPort() {
+    await this.connectionService.selectSerialPort();
+  }
+
   async resetCenter() {
     await this.HTService.resetCenter();
   }
 
   async resetHeadTracker() {
     await this.HTService.reset();
+  }
+
+  getVendorName(id: number | undefined) {
+    return id ? getUsbVendorById(id) : undefined;
   }
 }

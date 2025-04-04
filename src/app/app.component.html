@@ -1,64 +1,107 @@
 <mat-sidenav-container autosize>
   <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
-    <div class="flex flex-row justify-around m-4">
-      <div class="flex flex-col items-center text-white">
-        Rx
-        <div class="w-4 h-4 rounded-full bg-red-500 block"></div>
-      </div>
-      <div class="flex flex-col text-white">
-        Tx
-        <div class="w-4 h-4 rounded-full bg-red-500 block"></div>
+
+    <div class="flex flex-col p-4 gap-4">
+      <button mat-raised-button aria-label="Select port" (click)="selectPort()">
+        Select serial port
+      </button>
+      <div *ngIf="connectionService.port" class="flex flex-col gap-2">
+        <div class="text-green-400 font-medium uppercase text-sm text-center">Port selected:</div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Vendor
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ getVendorName(connectionService.port.getInfo().usbVendorId) ?? "Unknown" }}
+          </div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Vendor ID
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbVendorId }}
+          </div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Product ID
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbProductId }}
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="flex flex-col p-4 gap-4">
-      <button mat-raised-button [routerLink]="['settings']"> <mat-icon>settings</mat-icon> Settings </button>
-      <button mat-raised-button [routerLink]="['firmware']"> <mat-icon>grid_4x4</mat-icon> Firmware</button>
-      <button mat-raised-button (click)="resetHeadTracker()"> <mat-icon>autorenew</mat-icon> Reboot</button>
-<!--      <button mat-raised-button> <mat-icon>biotech</mat-icon> Calibrate</button>-->
-      <button mat-raised-button (click)="resetCenter()"> <mat-icon>gps_fixed</mat-icon> Reset Center</button>
+      <a [routerLink]="['settings']" class="ht-navitem" routerLinkActive="active">
+        <mat-icon class="!size-7 !text-lg">settings</mat-icon>
+        Settings
+        <mat-icon class="ml-auto">chevron_right</mat-icon>
+      </a>
+      <a [routerLink]="['firmware']" class="ht-navitem" routerLinkActive="active">
+        <mat-icon class="!size-7 !text-lg">grid_4x4</mat-icon>
+        Firmware
+        <mat-icon class="ml-auto">chevron_right</mat-icon>
+      </a>
+
+      <button mat-raised-button (click)="resetHeadTracker()">
+        <mat-icon>autorenew</mat-icon>
+        Reboot
+      </button>
+      <!--      <button mat-raised-button> <mat-icon>biotech</mat-icon> Calibrate</button>-->
+      <button mat-raised-button (click)="resetCenter()">
+        <mat-icon>gps_fixed</mat-icon>
+        Reset Center
+      </button>
+      <button mat-flat-button (click)="resetCenter()">
+        <mat-icon>save</mat-icon>
+        Save Settings
+      </button>
     </div>
     <div *ngIf="HTService.connected">
-      <div class="flex flex-col p-4 gap-4">
-        <div class="text-green-400 font-medium uppercase text-sm text-center">Connected</div>
+      <div class="flex flex-col p-4 gap-2">
+        <div class="text-green-400 font-medium uppercase text-sm text-center">HeadTracker Connected</div>
         <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Firmware version <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.firmwareVersion }}</div>
+          Firmware version
+          <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.firmwareVersion }}</div>
         </div>
         <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Hardware <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.hardwareVersion }}</div>
+          Hardware
+          <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.hardwareVersion }}</div>
         </div>
         <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Git version <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.gitVersion }}</div>
+          Git version
+          <div class="text-slate-700 bg-yellow-200 rounded-full px-2">{{ HTService.gitVersion }}</div>
         </div>
       </div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content class="bg-gray-100">
-    <mat-toolbar
-      class="shadow flex flex-row"
-      color="primary">
-      <button *ngIf="isMobile" mat-icon-button aria-label="Menu icon" (click)="toggleMenu()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <h1>HeadTracker</h1>
-      <div class="ml-auto">
-        <button mat-icon-button>
-          <mat-icon class="text-green-700">link</mat-icon>
+    <div class="flex flex-col h-full">
+      <mat-toolbar
+        class="shadow flex flex-row"
+        color="primary">
+        <button *ngIf="isMobile" mat-icon-button aria-label="Menu icon" (click)="toggleMenu()">
+          <mat-icon>menu</mat-icon>
         </button>
-        <button mat-icon-button disabled>
-          <mat-icon class="text-red-400">link_off</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon class="text-green-700">bluetooth</mat-icon>
-        </button>
-        <button mat-icon-button disabled>
-          <mat-icon class="text-red-400">bluetooth_disabled</mat-icon>
-        </button>
+        <h1>HeadTracker</h1>
+        <div class="ml-auto">
+          @if (HTService.connected) {
+            <button mat-icon-button disabled>
+              <mat-icon class="text-green-700">link</mat-icon>
+            </button>
+          } @else {
+            <button mat-icon-button disabled>
+              <mat-icon class="text-red-400">link_off</mat-icon>
+            </button>
+          }
+
+          <button mat-icon-button disabled>
+            <mat-icon class="text-red-400">bluetooth_disabled</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar>
+      <div class="m-4 flex flex-col items-stretch">
+        <router-outlet></router-outlet>
       </div>
-    </mat-toolbar>
-    <div class="m-4 pb-20 flex flex-col items-stretch">
-      <router-outlet></router-outlet>
+      <app-footer/>
     </div>
-    <app-footer />
+
   </mat-sidenav-content>
 </mat-sidenav-container>

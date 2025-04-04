@@ -22,3 +22,13 @@ mat-sidenav {
     @apply rounded-none !important;
     @apply w-72 !important;
 }
+
+.ht-navitem {
+    @apply hover:bg-slate-700 flex flex-row items-center hover:opacity-100;
+    @apply w-full py-2 px-4 border rounded-lg border-slate-500 hover:border-slate-200;
+    @apply text-white font-medium text-sm;
+}
+
+.ht-navitem.active {
+    @apply opacity-100 bg-slate-600;
+}

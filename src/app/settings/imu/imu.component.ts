@@ -81,7 +81,6 @@ export class ImuComponent implements OnInit, OnDestroy {
       });
     // init board values from the board
     this.subs.sink = this.HTService.$boardValues.subscribe((message) => {
-      console.info('Received message:', message);
       const newValues = {
         rll_min: message.rll_min ?? null,
         rll_cnt: message.rll_cnt ?? null,

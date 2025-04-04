@@ -94,6 +94,12 @@ export class HeadTrackerService implements OnDestroy {
     }
   }
 
+  public async saveToFlash() {
+    if (this.connected) {
+      await this.tracker.sendCommand('Flash');
+    }
+  }
+
   public async setValues(values: Partial<Messages.Get>) {
     if (this.connected) {
       await this.tracker.sendCommand('Set', values);
