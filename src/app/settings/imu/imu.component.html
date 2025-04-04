@@ -1,7 +1,7 @@
 <form [formGroup]="axisForm" class="flex flex-col">
   <div class="flex flex-row content-between gap-6">
     <span class="w-8">&nbsp;</span>
-    <div class="w-1/12 text-center">Value</div>
+    <div class="w-16  text-center">Value</div>
     <div class="w-2/12 text-center">Gain</div>
     <div class="w-4/12 text-center">Range</div>
     <div class="w-16 text-center -ml-8 ">&nbsp;</div>
@@ -12,7 +12,7 @@
   <div class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Tilt</div>
     <!-- IMU value -->
-    <div class="w-1/12 text-center rounded-md border p-2">
+    <div class="w-16  text-center rounded-md border p-2">
       <span class=" whitespace-nowrap">{{ tilt() }} &deg;</span>
     </div>
     <!-- Gain slider -->
@@ -59,7 +59,7 @@
   <div class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Roll</div>
     <!-- IMU value -->
-    <div class="w-1/12 text-center rounded-md border p-2">
+    <div class="w-16  text-center rounded-md border p-2">
       <span class=" whitespace-nowrap">{{ roll() }} &deg;</span>
     </div>
     <!-- Gain slider -->
@@ -105,8 +105,8 @@
   <div class="flex flex-row items-center gap-6">
     <div class="w-8 text-right">Pan</div>
     <!-- IMU value -->
-    <div class="w-1/12 text-center rounded-md border p-2">
-      <span class=" whitespace-nowrap">{{ pan() }} &deg;</span>
+    <div class="w-16 text-center rounded-md border p-2">
+      <span class="whitespace-nowrap">{{ pan() }} &deg;</span>
     </div>
     <!-- Gain slider -->
     <div class="w-2/12 flex flex-col">

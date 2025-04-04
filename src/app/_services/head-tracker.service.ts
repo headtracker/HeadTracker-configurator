@@ -10,7 +10,7 @@ import { SubSink } from 'subsink';
 })
 export class HeadTrackerService implements OnDestroy {
   private subs = new SubSink();
-  private initialized = false;
+  private messageSubs = new SubSink();
   readonly connectionService: ConnectionService = inject(ConnectionService);
   private readonly tracker: HeadTracker = new HeadTracker();
 
@@ -38,16 +38,12 @@ export class HeadTrackerService implements OnDestroy {
     await this.tracker.connect(port);
     this.connected = true;
 
-    if (this.initialized) {
-      return;
-    }
-
-    this.subs.sink = this.$messages.subscribe((message) => {
+    this.messageSubs.sink = this.$messages.subscribe((message) => {
       // console.info('Received message:', message);
     });
 
     // Get the firmware version
-    this.subs.sink = this.$messages.pipe(
+    this.messageSubs.sink = this.$messages.pipe(
       filter(filterCmds),
       filter((message): message is Messages.FW => message.Cmd === 'FW'),
       tap(console.info),
@@ -58,7 +54,7 @@ export class HeadTrackerService implements OnDestroy {
     });
 
     // Get the board values
-    this.subs.sink = this.$messages.pipe(
+    this.messageSubs.sink = this.$messages.pipe(
       filter(filterCmds),
       filter((message): message is Messages.Get => message.Cmd === 'Set'),
       tap(console.info),
@@ -77,7 +73,6 @@ export class HeadTrackerService implements OnDestroy {
       tiltoff: true,
     });
 
-    this.initialized = true;
   }
 
   get $messages() {
@@ -86,13 +81,7 @@ export class HeadTrackerService implements OnDestroy {
 
   public async openConnection() {
     if (this.connectionService.port) {
-      if(!this.initialized) {
-        await this.initConnection(this.connectionService.port)
-        return;
-      }
-
-      await this.tracker.connect(this.connectionService.port);
-      this.connected = true;
+      await this.initConnection(this.connectionService.port)
     } else {
       console.error('No port available to connect to.');
     }
@@ -100,6 +89,7 @@ export class HeadTrackerService implements OnDestroy {
 
   public async closeConnection() {
     await this.tracker.disconnect();
+    this.messageSubs.unsubscribe();
     this.connected = false;
   }
 
