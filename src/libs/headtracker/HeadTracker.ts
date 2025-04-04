@@ -17,6 +17,10 @@ export class HeadTracker {
   public $messages: Observable<any> = this.messageSubject.asObservable().pipe(
     map((message: Uint8Array) => this.textDecoder.decode(message)),
     map((message: string) => {
+      if(message.length === 0) {
+        return null;
+      }
+
       try {
         return JSON.parse(message);
       } catch (e) {

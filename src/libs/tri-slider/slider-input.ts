@@ -673,7 +673,7 @@ export class TriSliderRangeThumb extends TriSliderThumb implements _TriSliderRan
   }
 
   _setIsLeftThumb(): void {
-    this._isLeftThumb = !this._isEndThumb;
+    this._isLeftThumb = this._isStartThumb;
   }
 
   /** Whether this slider corresponds to the input on the left hand side. */

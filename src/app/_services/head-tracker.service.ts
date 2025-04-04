@@ -1,13 +1,15 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { ConnectionService } from './connection.service';
 import { filterCmds, HeadTracker } from '@libs/headtracker/HeadTracker';
-import { filter } from 'rxjs';
+import { BehaviorSubject, filter, tap } from 'rxjs';
 import { Messages } from '@libs/headtracker/Messages';
+import { SubSink } from 'subsink';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HeadTrackerService {
+export class HeadTrackerService implements OnDestroy {
+  private subs = new SubSink();
   readonly connectionService: ConnectionService = inject(ConnectionService);
   private readonly tracker: HeadTracker = new HeadTracker();
 
@@ -16,8 +18,11 @@ export class HeadTrackerService {
   public hardwareVersion?: string;
   public gitVersion?: string;
 
+  private boardValuesSubject = new BehaviorSubject<Partial<Messages.Get>>({});
+  public $boardValues = this.boardValuesSubject.asObservable();
+
   constructor() {
-    this.connectionService.$connectedPort.subscribe(async (port) => {
+    this.subs.sink = this.connectionService.$connectedPort.subscribe(async (port) => {
       if (port) {
         // Only connect if the port is the one we want, don't want to connect if it's in bootloader mode
         if (port.getInfo().usbProductId === 0x805a)
@@ -32,17 +37,28 @@ export class HeadTrackerService {
     await this.tracker.connect(port);
     this.connected = true;
 
-    this.$messages.subscribe((message) => {
+    this.subs.sink = this.$messages.subscribe((message) => {
       // console.info('Received message:', message);
     });
 
-    this.$messages.pipe(
+    // Get the firmware version
+    this.subs.sink = this.$messages.pipe(
       filter(filterCmds),
       filter((message): message is Messages.FW => message.Cmd === 'FW'),
+      tap(console.info),
     ).subscribe((message) => {
       this.firmwareVersion = message.Vers;
       this.hardwareVersion = message.Hard;
       this.gitVersion = message.Git;
+    });
+
+    // Get the board values
+    this.subs.sink = this.$messages.pipe(
+      filter(filterCmds),
+      filter((message): message is Messages.Get => message.Cmd === 'Set'),
+      tap(console.info),
+    ).subscribe((message) => {
+      this.boardValuesSubject.next(message)
     });
 
     await this.tracker.sendCommand('FW');
@@ -76,5 +92,15 @@ export class HeadTrackerService {
     if (this.connected) {
       await this.tracker.sendCommand('Reboot');
     }
+  }
+
+  public async setValues(values: Partial<Messages.Get>) {
+    if (this.connected) {
+      await this.tracker.sendCommand('Set', values);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
