@@ -1,0 +1,50 @@
+<div class="shadow rounded-xl bg-white p-6 mt-4">
+  <mat-stepper [linear]="true" #stepper>
+    <mat-step>
+      <ng-template matStepLabel>Lights Up</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="components_up.png" alt="">
+      </div>
+
+    </mat-step>
+    <mat-step >
+      <ng-template matStepLabel>Lights Down</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="components_down.png" alt="">
+      </div>
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Right Edge</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="edge_right.png" alt="">
+      </div>
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Left Edge</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="edge_left.png" alt="">
+      </div>
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>USB Up</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="USB_up.png" alt="">
+      </div>
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>USB Down</ng-template>
+      <div class="flex flex-col items-center">
+        <img src="USB_down.png" alt="">
+      </div>
+
+    </mat-step>
+  </mat-stepper>
+  <div class="flex flex-row place-content-between">
+    <button mat-stroked-button>Restart</button>
+    <button mat-flat-button>Record</button>
+  </div>
+</div>

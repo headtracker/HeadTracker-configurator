@@ -17,4 +17,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./channels/channels.component').then((x) => x.ChannelsComponent),
   },
+  {
+    path: 'calibrate',
+    loadComponent: () =>
+      import('./calibrate/calibrate.component').then((x) => x.CalibrateComponent),
+  },
 ];

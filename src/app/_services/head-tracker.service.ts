@@ -117,6 +117,12 @@ export class HeadTrackerService implements OnDestroy {
     }
   }
 
+  public async stopSendingAll() {
+    if (this.connected) {
+      await this.tracker.sendCommand('D--');
+    }
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
