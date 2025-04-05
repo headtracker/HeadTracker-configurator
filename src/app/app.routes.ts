@@ -12,4 +12,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./firmware/firmware.component').then((x) => x.FirmwareComponent),
   },
+  {
+    path: 'channels',
+    loadComponent: () =>
+      import('./channels/channels.component').then((x) => x.ChannelsComponent),
+  },
 ];

@@ -34,12 +34,17 @@
 
     </div>
 
-    <div class="flex flex-col p-4 gap-4" *ngIf="HTService.connected">
+    <div class="flex flex-col p-4 gap-4">
       <a [routerLink]="['settings']"
          class="ht-navitem"
          routerLinkActive="active">
         <mat-icon class="!size-7 !text-lg">settings</mat-icon>
         Settings
+        <mat-icon class="ml-auto">chevron_right</mat-icon>
+      </a>
+      <a [routerLink]="['channels']" class="ht-navitem" routerLinkActive="active">
+        <mat-icon class="!size-7 !text-lg">bar_chart</mat-icon>
+        Channel Viewer
         <mat-icon class="ml-auto">chevron_right</mat-icon>
       </a>
       <a [routerLink]="['firmware']" class="ht-navitem" routerLinkActive="active">
@@ -86,7 +91,7 @@
   <mat-sidenav-content class="bg-gray-100">
     <div class="flex flex-col h-full">
       <mat-toolbar
-        class="shadow flex flex-row"
+        class="shadow flex flex-row h-32 shrink-0"
         color="primary">
         <button mat-icon-button aria-label="Menu icon" (click)="toggleMenu()">
           <mat-icon>menu</mat-icon>
