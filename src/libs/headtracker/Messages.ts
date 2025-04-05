@@ -89,6 +89,7 @@ export namespace Messages {
     ch5arm: boolean;
     btmode: number;
     rstonwave: boolean;
+    buttonpin: number;
     butlngps: boolean;
     rstontlt: boolean;
     rstondblttap: boolean;

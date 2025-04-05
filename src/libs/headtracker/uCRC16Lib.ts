@@ -16,7 +16,6 @@ export class uCRC16Lib {
     const data_p: Uint8Array = new TextEncoder().encode(data);
     return this.calculate(data_p, data_p.length);
   }
-
   /**
    * Calculate CRC16 function
    *

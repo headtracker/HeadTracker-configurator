@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { HeadTrackerService } from '@app/_services/head-tracker.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, filter, startWith, throttleTime, zip } from 'rxjs';
+import { combineLatest, debounceTime, filter, startWith, throttleTime } from 'rxjs';
 import { filterCmds } from '@libs/headtracker/HeadTracker';
 import { Messages } from '@libs/headtracker/Messages';
 import { MatFormField } from '@angular/material/form-field';
@@ -12,9 +12,9 @@ import { TriSlider, TriSliderRangeThumb } from '@libs/tri-slider';
 import { Constants } from '@libs/headtracker/Settings';
 import { SubSink } from 'subsink';
 import { NgForOf } from '@angular/common';
-import { MatButtonModule, MatFabButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-imu',
@@ -274,7 +274,7 @@ export class ImuComponent implements OnInit, OnDestroy {
     });
   }
 
-  defaultValues(axis: 'tilt'|'roll'|'pan') {
+  defaultValues(axis: 'tilt' | 'roll' | 'pan') {
     switch (axis) {
       case 'tilt':
         this.axisForm.patchValue({
@@ -300,7 +300,7 @@ export class ImuComponent implements OnInit, OnDestroy {
     }
   }
 
-  maxValues(axis: 'tilt'|'roll'|'pan') {
+  maxValues(axis: 'tilt' | 'roll' | 'pan') {
     switch (axis) {
       case 'tilt':
         this.axisForm.patchValue({
@@ -326,7 +326,7 @@ export class ImuComponent implements OnInit, OnDestroy {
     }
   }
 
-  reCenter(axis: 'tilt'|'roll'|'pan') {
+  reCenter(axis: 'tilt' | 'roll' | 'pan') {
     switch (axis) {
       case 'tilt':
         const minVal = this.axisForm.controls.tlt_min.value!;

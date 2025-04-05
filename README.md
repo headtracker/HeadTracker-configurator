@@ -12,3 +12,9 @@ Running project
 1. Install nodejs version 22
 2. In the project root run "npm install"
 3. In the project root run "npm run start" to start the webservice
+
+## Known issues
+
++ 2.4 version does not send buttonpin value
++ {"Cmd":"Set","rstonwave":false} does\n't work, the CRC16 doesnt match the one that GUI sends
++ Centering a range slider to 1500 does\t work if max and min are also at their default values.

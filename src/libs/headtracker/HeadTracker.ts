@@ -136,18 +136,18 @@ export class HeadTracker {
               readingMessage = false;
 
               const receivedMessage = messageBuffer.slice(1, -3); // Exclude start (0x02) and end (0x03) bytes
-              const receivedCRC = messageBuffer.slice(-3, -1); // Last two bytes are the CRC16 value
-              const calculatedCRC = new Uint8Array(2);
-              const calculatedCRCValue = uCRC16Lib.calculate(receivedMessage, receivedMessage.length);
-              calculatedCRC[1] = calculatedCRCValue & 0xff;
-              calculatedCRC[0] = (calculatedCRCValue >> 8) & 0xff;
+              // const receivedCRC = messageBuffer.slice(-3, -1); // Last two bytes are the CRC16 value
+              // const calculatedCRC = new Uint8Array(2);
+              // const calculatedCRCValue = uCRC16Lib.calculate(receivedMessage, receivedMessage.length);
+              // calculatedCRC[1] = calculatedCRCValue & 0xff;
+              // calculatedCRC[0] = (calculatedCRCValue >> 8) & 0xff;
 
               // Can't get the CRC check to work, ignore it.
-              if (receivedCRC[0] === calculatedCRC[0] && receivedCRC[1] === calculatedCRC[1]) {
+              // if (receivedCRC[0] === calculatedCRC[0] && receivedCRC[1] === calculatedCRC[1]) {
                 // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
-              } else {
+              // } else {
                 // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
-              }
+              // }
               this.messageSubject.next(receivedMessage);
               messageBuffer = new Uint8Array();
             }

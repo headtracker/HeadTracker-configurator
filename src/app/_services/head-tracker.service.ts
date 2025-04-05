@@ -114,6 +114,11 @@ export class HeadTrackerService implements OnDestroy {
   public async setValues(values: Partial<Messages.Get>) {
     if (this.connected) {
       await this.tracker.sendCommand('Set', values);
+
+      // // Get the set values from the board so the UI and board don't get out of sync
+      // setTimeout(async () => {
+      //   await this.tracker.sendCommand('Get');
+      // }, 550);
     }
   }
 

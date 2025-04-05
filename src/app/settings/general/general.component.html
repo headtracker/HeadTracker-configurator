@@ -1,11 +1,12 @@
-<div class="flex flex-col p-4 gap-4">
+<form [formGroup]="form" class="flex flex-col p-4 gap-4">
   <!--  Center button -->
   <div class="flex flex-row items-center gap-4">
     <div class="w-56">Center button</div>
     <div>
       <mat-form-field appearance="outline">
-        <mat-select>
+        <mat-select formControlName="buttonpin">
           <mat-option [value]="-1">Off</mat-option>
+          <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -15,8 +16,9 @@
     <div class="w-56">Send Re-Center on Channel</div>
     <div>
       <mat-form-field appearance="outline">
-        <mat-select>
+        <mat-select formControlName="alertch">
           <mat-option [value]="-1">Off</mat-option>
+          <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch {{ i + 1 }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -25,13 +27,13 @@
   <div class="flex flex-row items-center gap-4">
     <div class="w-56">&nbsp;</div>
     <div class="flex flex-col">
-      <mat-checkbox>
+      <mat-checkbox formControlName="butlngps">
         Enable Tilt/Roll/Pan after a long button press
       </mat-checkbox>
-      <mat-checkbox>
+      <mat-checkbox formControlName="rstontlt">
         Center on Roll from Min to Max
       </mat-checkbox>
-      <mat-checkbox>
+      <mat-checkbox formControlName="rstonwave">
         Center on Proximity Detect
       </mat-checkbox>
     </div>
@@ -42,15 +44,16 @@
     <div class="flex row gap-6">
       <mat-form-field class="w-24" appearance="outline">
         <mat-label>Tilt (X)</mat-label>
-        <input matInput type="number"  value="0">
+        <input formControlName="rotx" matInput type="number" max="360" min="-360" step="1">
       </mat-form-field>
       <mat-form-field class="w-24" appearance="outline">
         <mat-label>Roll (Y)</mat-label>
-        <input matInput type="number"  value="0">
+        <input formControlName="roty" matInput type="number" max="360" min="-360" step="1">
       </mat-form-field>
-      <mat-form-field class="w-24" appearance="outline">
+      <mat-form-field  class="w-24" appearance="outline">
         <mat-label>Pan (Z)</mat-label>
-        <input matInput type="number"  value="0">
+        <input formControlName="rotz" matInput type="number" max="360" min="-360" step="1">
       </mat-form-field>
     </div>
   </div>
+</form>
