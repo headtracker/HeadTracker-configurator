@@ -55,7 +55,7 @@ export class HeadTracker {
     if (this.port) {
       try {
         await this.reader?.cancel();
-        // await this.port.close();
+        await this.port.close();
       } catch (err) {
         console.error('Error closing port:', err);
       }

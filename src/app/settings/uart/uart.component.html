@@ -1,14 +1,68 @@
-<div class="flex flex-col p-4 gap-4">
+<form [formGroup]="form" class="flex flex-col p-4 gap-4">
   <div class="flex flex-row items-center gap-4">
     <div class="w-40">UART Mode</div>
     <mat-form-field appearance="outline">
-      <mat-select>
-        <mat-option [value]="null">Disabled</mat-option>
-        <mat-option [value]="'sbus'">SBUS in + out</mat-option>
-        <mat-option [value]="'crsfin'">CRSF Input</mat-option>
-        <mat-option [value]="'crsfout'">CRSF Output</mat-option>
+      <mat-select formControlName="uartmode">
+        <mat-option [value]="0">Disabled</mat-option>
+        <mat-option [value]="1">SBUS in + out</mat-option>
+        <mat-option [value]="2">CRSF Input</mat-option>
+        <mat-option [value]="3">CRSF Output</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-
-</div>
+  @switch (form.controls.uartmode.value) {
+    @case (1) {
+      <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">Serial Bus (SBUS) - Output</div>
+      <div class="flex flex-row gap-4">
+        <mat-form-field>
+          <mat-label>Update rate</mat-label>
+          <input matInput formControlName="sbustxrate" [min]="30" [max]="140" type="number">
+          <span matTextSuffix>Hz</span>
+        </mat-form-field>
+        <mat-checkbox formControlName="sboutinv">
+          Invert
+        </mat-checkbox>
+      </div>
+      <div class="text-sm">Sbus output pin - RX (P1.03)</div>
+      <hr>
+      <div class="truncate text-lg font-medium leading-6 tracking-tight mb-2">Serial Bus (SBUS) - Input</div>
+      <mat-checkbox formControlName="sbininv" class="-ml-3">
+        Invert
+      </mat-checkbox>
+      <div class="text-sm">Sbus output pin - TX (P1.10)</div>
+      <div class="text-sm font-light">To use normal Sbus mode(Not inverted) you must
+        <strong>solder D5 to D6</strong>. This is due to a hardware constraint on the NRF52. If you wish to use inverted
+        SBUS which is a normal UART signal this isn't required. Please see online documentation for more details.
+      </div>
+    }
+    @case (2) {
+      <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">CRSF Input settings</div>
+      <div class="text-sm">There are no values to configure in this mode.</div>
+    }
+    @case (3) {
+      <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">CRSF Output settings</div>
+      <!--  Update rate -->
+      <div class="flex flex-row items-center gap-4">
+        <div class="w-56">Update rate</div>
+        <mat-form-field>
+          <input matInput formControlName="crsftxrate" [min]="30" [max]="140" type="number">
+          <span matTextSuffix>Hz</span>
+        </mat-form-field>
+      </div>
+      <!--  Ch1 arm -->
+      <div class="flex flex-row items-center gap-4">
+        <div class="w-56">Use channel 5 as AUX1/ARM</div>
+        <mat-checkbox formControlName="ch5arm" class="-ml-3">
+          Set channel 5 to 2000μs
+        </mat-checkbox>
+      </div>
+      <!--  Ch1 arm -->
+      <div class="flex flex-row items-center gap-4">
+        <div class="w-56">CRSF Output level</div>
+        <mat-checkbox formControlName="crsftxinv" class="-ml-3">
+          Invert TX
+        </mat-checkbox>
+      </div>
+    }
+  }
+</form>
