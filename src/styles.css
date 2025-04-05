@@ -9,6 +9,10 @@
   --mdc-slider-inactive-track-color: #5b9a17;
 }
 
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece.mdc-notched-outline__notch {
+  border-right-width: 0px !important;
+}
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }

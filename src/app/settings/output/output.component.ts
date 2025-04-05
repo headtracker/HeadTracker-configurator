@@ -43,6 +43,8 @@ export class OutputComponent implements OnInit, OnDestroy {
     this.interval = setInterval(() => {
       const timeDiff = differenceInMilliseconds(Date.now(), this.drawStart!);
 
+      if (!this.axisChart) return;
+
       this.barChartOptions = {
         ...this.axisChart!.options,
         scales: {

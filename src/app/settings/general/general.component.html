@@ -1,0 +1,56 @@
+<div class="flex flex-col p-4 gap-4">
+  <!--  Center button -->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-56">Center button</div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-select>
+          <mat-option [value]="-1">Off</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <!--  Send recenter on Channel-->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-56">Send Re-Center on Channel</div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-select>
+          <mat-option [value]="-1">Off</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <!--  Select box options-->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-56">&nbsp;</div>
+    <div class="flex flex-col">
+      <mat-checkbox>
+        Enable Tilt/Roll/Pan after a long button press
+      </mat-checkbox>
+      <mat-checkbox>
+        Center on Roll from Min to Max
+      </mat-checkbox>
+      <mat-checkbox>
+        Center on Proximity Detect
+      </mat-checkbox>
+    </div>
+  </div>
+  <!--  Board rotation-->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-56">Board Rotation</div>
+    <div class="flex row gap-6">
+      <mat-form-field class="w-24" appearance="outline">
+        <mat-label>Tilt (X)</mat-label>
+        <input matInput type="number"  value="0">
+      </mat-form-field>
+      <mat-form-field class="w-24" appearance="outline">
+        <mat-label>Roll (Y)</mat-label>
+        <input matInput type="number"  value="0">
+      </mat-form-field>
+      <mat-form-field class="w-24" appearance="outline">
+        <mat-label>Pan (Z)</mat-label>
+        <input matInput type="number"  value="0">
+      </mat-form-field>
+    </div>
+  </div>

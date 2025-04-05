@@ -1,0 +1,14 @@
+<div class="flex flex-col p-4 gap-4">
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-40">UART Mode</div>
+    <mat-form-field appearance="outline">
+      <mat-select>
+        <mat-option [value]="null">Disabled</mat-option>
+        <mat-option [value]="'sbus'">SBUS in + out</mat-option>
+        <mat-option [value]="'crsfin'">CRSF Input</mat-option>
+        <mat-option [value]="'crsfout'">CRSF Output</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</div>

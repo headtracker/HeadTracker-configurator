@@ -30,7 +30,7 @@ import { getUsbVendorById } from 'usb-vendor-ids';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  title = 'headtracker-webui';
+  title = 'Head Tracker Configurator';
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   isMobile = true;

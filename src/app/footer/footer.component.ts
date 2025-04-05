@@ -8,7 +8,7 @@ import { MatIcon } from '@angular/material/icon';
   standalone: true,
   imports: [MatButton, MatIcon],
   templateUrl: './footer.component.html',
-  host: { class: 'shadow-inner border bg-white p-4 flex flex-row sticky w-full bottom-0 mt-auto' },
+  host: { class: 'shadow-inner border bg-white p-4 flex flex-row sticky w-full bottom-0 mt-auto z-40' },
 })
 export class FooterComponent {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
