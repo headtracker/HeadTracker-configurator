@@ -15,6 +15,9 @@ Running project
 
 ## Known issues
 
-+ 2.4 version does not send buttonpin value
-+ {"Cmd":"Set","rstonwave":false} does\n't work, the CRC16 doesnt match the one that GUI sends
++ 2.4 version does not send 
+  + buttonpin
+  + ppmoutpin 
+  + ppminpin
++ `{"Cmd":"Set","rstonwave":false}` does\n't work, the CRC16 doesnt match the one that GUI sends
 + Centering a range slider to 1500 does\t work if max and min are also at their default values.

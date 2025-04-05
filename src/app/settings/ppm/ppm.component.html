@@ -1,43 +1,65 @@
-<div class="flex flex-col p-4 gap-4">
+<form [formGroup]="form" class="flex flex-col p-4 gap-4">
   <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">Pulse Position Modulation (PPM) - Output</div>
   <div class="flex flex-row gap-4">
     <mat-form-field appearance="outline">
       <mat-label>PPM Output Pin</mat-label>
-      <input matInput type="number" value="0">
+      <mat-select formControlName="ppmoutpin">
+        <mat-option [value]="-1">Off</mat-option>
+        <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
+      </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field class="w-64" appearance="outline">
       <mat-label>Number of Channels to Output</mat-label>
-      <input matInput type="number" value="0">
+      <mat-select formControlName="ppmchcnt">
+        <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">
+          {{ i + 1 }}{{ i == 7 ? ' Default' : '' }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
   <div class="flex flex-row gap-4">
-    <mat-checkbox class="-ml-3">
+    <mat-checkbox formControlName="ppmoutinvert" class="-ml-3">
       Invert
     </mat-checkbox>
   </div>
   <div class="flex flex-row gap-4">
     <mat-form-field appearance="outline">
       <mat-label>Frame Length</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="ppmframe"
+             [step]="0.001"
+             [min]="Constants.PPM_MIN_FRAME / 1000"
+             [max]="Constants.PPM_MAX_FRAME / 1000" type="number">
+      <span matTextSuffix>ms</span>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Sync Pulse</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="ppmsync" [min]="100" [max]="800" type="number">
+      <span matTextSuffix>μs</span>
     </mat-form-field>
+  </div>
+  <div class="text-sm font-light">
+    @if (maxFrameLength && form.controls.ppmframe.value && maxFrameLength > (form.controls.ppmframe.value * 1000)) {
+      PPM Frame length possibly too short to support channel data
+    } @else if(form.controls.ppmframe.value) {
+      PPM data will fit in frame. Refresh rate: {{(1 / (form.controls.ppmframe.value/1000.0)).toFixed(2) }} Hz
+    }
   </div>
 
   <hr>
   <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">Pulse Position Modulation (PPM) - Input</div>
   <div class="flex flex-row gap-4">
     <mat-form-field appearance="outline">
-      <mat-label>PPM Output Pin</mat-label>
-      <input matInput type="number" value="0">
+      <mat-label>PPM Input Pin</mat-label>
+      <mat-select formControlName="ppminpin">
+        <mat-option [value]="-1">Off</mat-option>
+        <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
   <div class="flex flex-row gap-4">
-    <mat-checkbox class="-ml-3">
+    <mat-checkbox formControlName="ppmininvert" class="-ml-3">
       Invert
     </mat-checkbox>
   </div>
 
-</div>
+</form>

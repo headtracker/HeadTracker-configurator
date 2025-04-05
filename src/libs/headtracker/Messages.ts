@@ -102,6 +102,7 @@ export namespace Messages {
     ppmsync: number;
     ppmchcnt: number;
     btpairedaddress: string;
-
+    ppmoutpin: number;
+    ppminpin: number;
   }
 }
