@@ -4,6 +4,7 @@ import { filterCmds, HeadTracker } from '@libs/headtracker/HeadTracker';
 import { BehaviorSubject, filter, tap } from 'rxjs';
 import {  Messages } from '@libs/headtracker/Messages';
 import { SubSink } from 'subsink';
+import { NotificationsService } from '@app/_services/notifications.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class HeadTrackerService implements OnDestroy {
   private subs = new SubSink();
   private messageSubs = new SubSink();
   readonly connectionService: ConnectionService = inject(ConnectionService);
+  readonly notifications = inject(NotificationsService);
   private readonly tracker: HeadTracker = new HeadTracker();
 
   public connected = signal(false);
@@ -73,6 +75,8 @@ export class HeadTrackerService implements OnDestroy {
       tiltoff: true,
     });
 
+    this.notifications.push('Head Tracker Connected');
+
   }
 
   get $messages() {
@@ -98,23 +102,27 @@ export class HeadTrackerService implements OnDestroy {
     await this.tracker.disconnect();
     this.messageSubs.unsubscribe();
     this.connected.set(false);
+    this.notifications.push('Connection closed to Head Tracker');
   }
 
   public async resetCenter() {
     if (this.connected()) {
       await this.tracker.sendCommand('RstCnt');
+      this.notifications.push('Center reset');
     }
   }
 
   public async reset() {
     if (this.connected()) {
       await this.tracker.sendCommand('Reboot');
+      this.notifications.push('Board rebooting');
     }
   }
 
   public async saveToFlash() {
     if (this.connected()) {
       await this.tracker.sendCommand('Flash');
+      this.notifications.push('Values saved to flash');
     }
   }
 

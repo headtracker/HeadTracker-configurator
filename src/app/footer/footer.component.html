@@ -1,5 +1,6 @@
 <button mat-raised-button (click)="resetCenter()"> <mat-icon>gps_fixed</mat-icon> Reset Center</button>
-<button class="ml-auto" mat-flat-button aria-label="Select port" (click)="saveToFlash()">
+<div class="text-xs font-mono">{{ notifications.messages$ | async }} </div>
+<button mat-flat-button aria-label="Select port" (click)="saveToFlash()">
   Save settings
 </button>
 
