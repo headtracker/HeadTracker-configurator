@@ -19,6 +19,7 @@ export namespace Messages {
     btrmt?: string;
     ['6btaddrchr']?: string;
     ['6btrmtchr']?: string;
+    gyrocal?: boolean;
   }
 
   export interface Get {

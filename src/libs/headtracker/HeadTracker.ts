@@ -11,13 +11,15 @@ export class HeadTracker {
   private reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
   private textDecoder = new TextDecoder();
   private messageSubject = new Subject<Uint8Array>();
+  private commandQueue: { command: string; params: object }[] = [];
+  private queueInterval: number | null = null;
   // this is the observable that will be used to get the messages
   // it will take the Uint8Array from the subject and decode it to a string
   // and try to parse it to an object
   public $messages: Observable<any> = this.messageSubject.asObservable().pipe(
     map((message: Uint8Array) => this.textDecoder.decode(message)),
     map((message: string) => {
-      if(message.length === 0) {
+      if (message.length === 0) {
         return null;
       }
 
@@ -64,10 +66,41 @@ export class HeadTracker {
   }
 
   async sendCommand(command: string, params: object = {}): Promise<void> {
+
+    this.commandQueue.push({ command, params });
+
+    if (!this.queueInterval) {
+      console.info('Starting interval to send commands');
+      this.queueInterval = setInterval(async () => {
+        await this.writeFromQueue();
+      }, 100) as unknown as number;
+    }
+  }
+
+  // The writing process has to be in a queue because the serial port can only handle one write at a time
+  async writeFromQueue() {
     if (!this.port) {
       console.error('Port not connected');
       return;
     }
+
+    if (this.commandQueue.length === 0) {
+      console.info('No commands in queue, stopping interval');
+      if (this.queueInterval) {
+        clearInterval(this.queueInterval);
+        this.queueInterval = null;
+      }
+      return;
+    }
+
+    if (!this.port.writable || this.port.writable.locked) {
+      console.info('Port not writable');
+      return;
+    }
+
+    const writer = this.port.writable.getWriter();
+
+    const { command, params } = this.commandQueue.shift()!;
 
     const cmd = {
       Cmd: command,
@@ -77,7 +110,6 @@ export class HeadTracker {
     const cmdString = JSON.stringify(cmd);
 
     const encoder = new TextEncoder();
-    const writer = this.port.writable!.getWriter();
 
     const CRC16 = uCRC16Lib.calculateFromString(cmdString);
     let crcArray = new Uint8Array(2);
@@ -95,7 +127,7 @@ export class HeadTracker {
 
     const message = packet.view();
 
-    console.log('Sending command:', new TextDecoder().decode(message));
+    console.info('Sending command:', new TextDecoder().decode(message));
 
     await writer.write(message);
     writer.releaseLock();
@@ -144,9 +176,9 @@ export class HeadTracker {
 
               // Can't get the CRC check to work, ignore it.
               // if (receivedCRC[0] === calculatedCRC[0] && receivedCRC[1] === calculatedCRC[1]) {
-                // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
+              // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
               // } else {
-                // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
+              // console.log('Received full message:', new TextDecoder().decode(receivedMessage));
               // }
               this.messageSubject.next(receivedMessage);
               messageBuffer = new Uint8Array();

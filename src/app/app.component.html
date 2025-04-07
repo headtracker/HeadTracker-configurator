@@ -2,39 +2,6 @@
   <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
 
     <div class="flex flex-col p-4 gap-4">
-      <button mat-raised-button aria-label="Select port" (click)="selectPort()">
-        Select serial port
-      </button>
-      <div *ngIf="connectionService.port" class="flex flex-col gap-2">
-        <div class="text-green-400 font-medium uppercase text-sm text-center">Port selected:</div>
-        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Vendor
-          <div
-            class="text-slate-700 bg-green-200 rounded-full px-2">{{ getVendorName(connectionService.port.getInfo().usbVendorId) ?? "Unknown" }}
-          </div>
-        </div>
-        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Vendor ID
-          <div
-            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbVendorId }}
-          </div>
-        </div>
-        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
-          Product ID
-          <div
-            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbProductId }}
-          </div>
-        </div>
-        <div *ngIf="!HTService.connected">
-          <button mat-flat-button class="!bg-green-600 w-full" (click)="HTService.openConnection()">
-            Connect HeadTracker
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="flex flex-col p-4 gap-4">
       <a [routerLink]="['settings']"
          class="ht-navitem"
          routerLinkActive="active">
@@ -72,7 +39,39 @@
         Save Settings
       </button>
     </div>
-    <div *ngIf="HTService.connected">
+    <div class="flex flex-col p-4 gap-4">
+      <button mat-raised-button aria-label="Select port" (click)="selectPort()">
+        Select serial port
+      </button>
+      <div *ngIf="connectionService.port" class="flex flex-col gap-2">
+        <div class="text-green-400 font-medium uppercase text-sm text-center">Port selected:</div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Vendor
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ getVendorName(connectionService.port.getInfo().usbVendorId) ?? "Unknown" }}
+          </div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Vendor ID
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbVendorId }}
+          </div>
+        </div>
+        <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
+          Product ID
+          <div
+            class="text-slate-700 bg-green-200 rounded-full px-2">{{ connectionService.port.getInfo().usbProductId }}
+          </div>
+        </div>
+        <div *ngIf="!HTService.connected()">
+          <button mat-flat-button class="!bg-green-600 w-full" (click)="HTService.openConnection()">
+            Connect HeadTracker
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <div *ngIf="HTService.connected()">
       <div class="flex flex-col p-4 gap-2">
         <div class="text-green-400 font-medium uppercase text-sm text-center">HeadTracker Connected</div>
         <div class="text-white font-medium text-xs flex flex-row align-middle justify-between">
@@ -103,7 +102,7 @@
         </button>
         <h1>HeadTracker</h1>
         <div class="ml-auto">
-          @if (HTService.connected) {
+          @if (HTService.connected()) {
             <button mat-icon-button disabled>
               <mat-icon class="text-green-700">link</mat-icon>
             </button>

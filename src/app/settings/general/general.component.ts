@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatOption } from '@angular/material/core';
@@ -16,7 +16,7 @@ import { debounceTime, filter, throttleTime } from 'rxjs';
   imports: [MatFormFieldModule, MatInputModule, MatOption, MatSelect, ReactiveFormsModule, MatCheckboxModule, NgForOf],
   templateUrl: './general.component.html',
 })
-export class GeneralComponent implements OnInit, OnDestroy {
+export class GeneralComponent implements OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private formBuilder = inject(FormBuilder);
   private subs = new SubSink();
@@ -24,9 +24,13 @@ export class GeneralComponent implements OnInit, OnDestroy {
   @Input('active')
   set active(value: boolean) {
     if (value) {
-      console.log('GeneralComponent active');
+      this.HTService.readValues(['gyrocal']).then();
+    } else {
+      this.HTService.stopReadingValues(['gyrocal']).then();
     }
   }
+
+  gyrocal = signal(false);
 
   form = this.formBuilder.group({
     buttonpin: [2],
@@ -39,8 +43,14 @@ export class GeneralComponent implements OnInit, OnDestroy {
     rotz: [0],
   });
 
-  ngOnInit() {
-    // init board values from the board
+  constructor() {
+    // When the board connects, read the values
+    effect(() => {
+      if(this.HTService.connected()) {
+        this.HTService.readValues(['gyrocal']).then();
+      }
+    });
+
     this.subs.sink = this.HTService.$boardValues.subscribe((message) => {
       const newValues = {
         buttonpin: message.buttonpin ?? null,
@@ -53,6 +63,10 @@ export class GeneralComponent implements OnInit, OnDestroy {
         rotz: message.rotz ?? null,
       };
       this.form.patchValue(newValues, { emitEvent: false });
+    });
+
+    this.subs.sink = this.HTService.$dataMessages.subscribe((message) => {
+      'gyrocal' in message && this.gyrocal.set(message['gyrocal']!);
     });
 
     this.mapChanges();

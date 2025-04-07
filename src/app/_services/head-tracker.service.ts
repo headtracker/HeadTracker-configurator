@@ -14,7 +14,7 @@ export class HeadTrackerService implements OnDestroy {
   readonly connectionService: ConnectionService = inject(ConnectionService);
   private readonly tracker: HeadTracker = new HeadTracker();
 
-  public connected: boolean = false;
+  public connected = signal(false);
   public firmwareVersion?: string;
   public hardwareVersion?: string;
   public gitVersion?: string;
@@ -36,7 +36,7 @@ export class HeadTrackerService implements OnDestroy {
 
   private async initConnection(port: SerialPort) {
     await this.tracker.connect(port);
-    this.connected = true;
+    this.connected.set(true)
 
     this.messageSubs.sink = this.$messages.subscribe((message) => {
       // console.info('Received message:', message);
@@ -97,29 +97,29 @@ export class HeadTrackerService implements OnDestroy {
   public async closeConnection() {
     await this.tracker.disconnect();
     this.messageSubs.unsubscribe();
-    this.connected = false;
+    this.connected.set(false);
   }
 
   public async resetCenter() {
-    if (this.connected) {
+    if (this.connected()) {
       await this.tracker.sendCommand('RstCnt');
     }
   }
 
   public async reset() {
-    if (this.connected) {
+    if (this.connected()) {
       await this.tracker.sendCommand('Reboot');
     }
   }
 
   public async saveToFlash() {
-    if (this.connected) {
+    if (this.connected()) {
       await this.tracker.sendCommand('Flash');
     }
   }
 
   public async setValues(values: Partial<Messages.Get>) {
-    if (this.connected) {
+    if (this.connected()) {
       await this.tracker.sendCommand('Set', values);
 
       // // Get the set values from the board so the UI and board don't get out of sync
@@ -130,13 +130,13 @@ export class HeadTrackerService implements OnDestroy {
   }
 
   public async stopSendingAll() {
-    if (this.connected) {
+    if (this.connected()) {
       await this.tracker.sendCommand('D--');
     }
   }
 
   public async readValues(input: (keyof Messages.Data)[]) {
-    if (this.connected) {
+    if (this.connected()) {
       const values: any = {}
       input.forEach((key) => {
         values[key] = true;
@@ -147,7 +147,7 @@ export class HeadTrackerService implements OnDestroy {
   }
 
   public async stopReadingValues(input: (keyof Messages.Data)[]) {
-    if (this.connected) {
+    if (this.connected()) {
       const values: any = {}
       input.forEach((key) => {
         values[key] = false;

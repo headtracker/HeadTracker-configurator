@@ -56,4 +56,11 @@
       </mat-form-field>
     </div>
   </div>
+  <div class="flex flex-row gap-2 items-center">
+    @if (gyrocal()) {
+      <div class="rounded-full bg-green-800 size-4"></div> Gyrometer Calibrated
+    } @else {
+      <div class="rounded-full bg-red-800 size-4"></div> Gyrometer Not Calibrated
+    }
+  </div>
 </form>

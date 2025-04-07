@@ -1,11 +1,11 @@
-import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { HeadTrackerService } from '@app/_services/head-tracker.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SubSink } from 'subsink';
-import { combineLatest, debounceTime, filter, startWith, throttleTime } from 'rxjs';
+import { debounceTime, filter, throttleTime } from 'rxjs';
 
 @Component({
   selector: 'app-bluetooth',
@@ -13,7 +13,7 @@ import { combineLatest, debounceTime, filter, startWith, throttleTime } from 'rx
   imports: [MatFormField, MatOption, MatSelect, ReactiveFormsModule],
   templateUrl: './bluetooth.component.html',
 })
-export class BluetoothComponent implements OnInit, OnDestroy {
+export class BluetoothComponent implements OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private formBuilder = inject(FormBuilder);
   private subs = new SubSink();
@@ -36,7 +36,13 @@ export class BluetoothComponent implements OnInit, OnDestroy {
     btmode: [-1],
   });
 
-  ngOnInit() {
+  constructor() {
+    // When the board connects, read the values
+    effect(() => {
+      if(this.HTService.connected()) {
+        this.HTService.readValues(['btaddr', 'btcon', 'btrmt']).then();
+      }
+    });
     // init board values from the board
     this.subs.sink = this.HTService.$boardValues.subscribe((message) => {
       const newValues = {
