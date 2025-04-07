@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgForOf } from '@angular/common';
@@ -28,6 +28,13 @@ export class PpmComponent implements OnInit, OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private formBuilder = inject(FormBuilder);
   private subs = new SubSink();
+
+  @Input('active')
+  set active(value: boolean) {
+    if (value) {
+      this.HTService.getAllBoardValues().then();
+    }
+  }
 
   form = this.formBuilder.group({
     ppmoutpin: [-1],

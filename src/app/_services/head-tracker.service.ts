@@ -165,6 +165,12 @@ export class HeadTrackerService implements OnDestroy {
     }
   }
 
+  public async getAllBoardValues() {
+    if (this.connected()) {
+      await this.tracker.sendCommand('Get');
+    }
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

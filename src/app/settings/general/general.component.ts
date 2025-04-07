@@ -24,6 +24,7 @@ export class GeneralComponent implements OnDestroy {
   @Input('active')
   set active(value: boolean) {
     if (value) {
+      this.HTService.getAllBoardValues().then();
       this.HTService.readValues(['gyrocal']).then();
     } else {
       this.HTService.stopReadingValues(['gyrocal']).then();

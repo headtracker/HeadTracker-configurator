@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { OutputComponent } from '@app/settings/output/output.component';
 import { ImuComponent } from '@app/settings/imu/imu.component';
 import { TriSlider, TriSliderRangeThumb } from '@libs/tri-slider';
@@ -11,6 +11,7 @@ import { UartComponent } from '@app/settings/uart/uart.component';
 import { BluetoothComponent } from '@app/settings/bluetooth/bluetooth.component';
 import { PwmComponent } from '@app/settings/pwm/pwm.component';
 import { AnalogauxComponent } from '@app/settings/analogaux/analogaux.component';
+import { HeadTrackerService } from '@app/_services/head-tracker.service';
 
 @Component({
   selector: 'app-settings',
@@ -29,8 +30,19 @@ import { AnalogauxComponent } from '@app/settings/analogaux/analogaux.component'
   ],
   templateUrl: './settings.component.html',
 })
-export class SettingsComponent {
-  start = new FormControl('200');
-  mid = new FormControl('300');
-  end = new FormControl('400');
+export class SettingsComponent implements OnDestroy {
+  readonly HTService: HeadTrackerService = inject(HeadTrackerService);
+
+  constructor() {
+    effect(() => {
+      if(this.HTService.connected()) {
+        this.HTService.getAllBoardValues().then();
+        this.HTService.readValues(['panout', 'rollout', 'tiltout', 'panoff', 'rolloff', 'tiltoff']).then()
+      }
+    });
+  }
+
+  async ngOnDestroy() {
+    await this.HTService.stopReadingValues(['panout', 'rollout', 'tiltout', 'panoff', 'rolloff', 'tiltoff'])
+  }
 }

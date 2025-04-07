@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,6 +20,13 @@ export class UartComponent implements OnInit, OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private formBuilder = inject(FormBuilder);
   private subs = new SubSink();
+
+  @Input('active')
+  set active(value: boolean) {
+    if (value) {
+      this.HTService.getAllBoardValues().then();
+    }
+  }
 
   form = this.formBuilder.group({
     uartmode: [0],
