@@ -1,14 +1,64 @@
-<div class="flex flex-col p-4 gap-4">
+<form [formGroup]="form" class="flex flex-col p-4 gap-4">
   <div class="flex flex-row items-center gap-4">
     <div class="w-40">Mode</div>
-    <mat-form-field appearance="outline" class="w-80">
-      <mat-select>
-        <mat-option [value]="null">Disabled</mat-option>
-        <mat-option [value]="'head'">FrSky - Wireless Transmitter (Head)</mat-option>
-        <mat-option [value]="'remote'">FrSky - Wireless Receiver (Remote)</mat-option>
-        <mat-option [value]="'scanner'">FrSky - Wireless Receiver - Scanner Mode</mat-option>
+    <mat-form-field appearance="outline" class="w-96">
+      <mat-select formControlName="btmode">
+        <mat-option [value]="0">Disabled</mat-option>
+        <mat-option [value]="1">FrSky - Wireless Transmitter (Head)</mat-option>
+        <mat-option [value]="2">FrSky - Wireless Receiver (Remote)</mat-option>
+        <mat-option [value]="3">FrSky - Wireless Receiver - Scanner Mode</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
+  @switch (form.controls.btmode.value) {
+    @case (1) {
+    }
+    @case (2) {
+      <!--Remote connection-->
+      <div class="flex flex-row items-center gap-4">
+        <div class="w-40">Remote Connection</div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-select>
+              <mat-option [value]="-1">Off</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    }
+    @case (3) {
+      <!--Remote connection-->
+      <div class="flex flex-row items-center gap-4">
+        <div class="w-40">Remote Connection</div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-select>
+              <mat-option [value]="-1">Off</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    }
+  }
 
-</div>
+  <!--Status-->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-40">Status</div>
+    <div>
+      @if (btcon()) {
+        Connected
+      } @else {
+        Not Connected
+      }
+
+    </div>
+  </div>
+  <!--Aadress-->
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-40">Aadress</div>
+    <div>
+      {{ btaddrchr() }}
+    </div>
+  </div>
+
+</form>

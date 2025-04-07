@@ -1,18 +1,18 @@
-<div class="flex flex-col p-4 gap-4">
+<form [formGroup]="form" class="flex flex-col p-4 gap-4">
   <!--  Analog A4 -->
   <div class="flex flex-row gap-4 items-center">
     <div class="w-24">Analog A4</div>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Gain (μs/volt)</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an0gain" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Offset μs</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an0off" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="an0ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -23,15 +23,15 @@
     <div class="w-24">Analog A5</div>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Gain (μs/volt)</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an1gain" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Offset μs</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an1off" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="an1ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -42,15 +42,15 @@
     <div class="w-24">Analog A6</div>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Gain (μs/volt)</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an2gain" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Offset μs</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an2off" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="an2ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -61,15 +61,15 @@
     <div class="w-24">Analog A7</div>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Gain (μs/volt)</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an3gain" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Offset μs</mat-label>
-      <input matInput type="number" value="0">
+      <input matInput formControlName="an3off" type="number" [min]="Constants.FLOAT_MIN" [max]="Constants.FLOAT_MAX">
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="an3ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -81,13 +81,20 @@
     <div class="w-28">Aux function 1</div>
     <mat-form-field class="w-72" appearance="outline">
       <mat-label>Function</mat-label>
-      <mat-select>
-        <mat-option [value]="1">X Gyrometer +/- 1000deg/s</mat-option>
+      <mat-select formControlName="aux0func">
+        <mat-option [value]="0">X Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="1">Y Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="2">Z Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="3">X Acceleration +/- 2g</mat-option>
+        <mat-option [value]="4">Y Acceleration +/- 2g</mat-option>
+        <mat-option [value]="5">Z Acceleration +/- 2g</mat-option>
+        <mat-option [value]="6">Z Acceleration +/- 2g (Offset by 1g)</mat-option>
+        <mat-option [value]="6">Bluetooth RSSI</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="aux0ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -98,13 +105,20 @@
     <div class="w-28">Aux function 2</div>
     <mat-form-field class="w-72" appearance="outline">
       <mat-label>Function</mat-label>
-      <mat-select>
-        <mat-option [value]="1">X Gyrometer +/- 1000deg/s</mat-option>
+      <mat-select formControlName="aux1func">
+        <mat-option [value]="0">X Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="1">Y Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="2">Z Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="3">X Acceleration +/- 2g</mat-option>
+        <mat-option [value]="4">Y Acceleration +/- 2g</mat-option>
+        <mat-option [value]="5">Z Acceleration +/- 2g</mat-option>
+        <mat-option [value]="6">Z Acceleration +/- 2g (Offset by 1g)</mat-option>
+        <mat-option [value]="6">Bluetooth RSSI</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select formControlName="aux1ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
@@ -115,17 +129,24 @@
     <div class="w-28">Aux function 3</div>
     <mat-form-field class="w-72" appearance="outline">
       <mat-label>Function</mat-label>
-      <mat-select>
-        <mat-option [value]="1">X Gyrometer +/- 1000deg/s</mat-option>
+      <mat-select formControlName="aux2func">
+        <mat-option [value]="0">X Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="1">Y Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="2">Z Gyrometer +/- 1000deg/s</mat-option>
+        <mat-option [value]="3">X Acceleration +/- 2g</mat-option>
+        <mat-option [value]="4">Y Acceleration +/- 2g</mat-option>
+        <mat-option [value]="5">Z Acceleration +/- 2g</mat-option>
+        <mat-option [value]="6">Z Acceleration +/- 2g (Offset by 1g)</mat-option>
+        <mat-option [value]="6">Bluetooth RSSI</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="w-36" appearance="outline">
       <mat-label>Channel</mat-label>
-      <mat-select>
+      <mat-select  formControlName="aux2ch">
         <mat-option [value]="-1">Disabled</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-</div>
+</form>
 

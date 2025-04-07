@@ -1,7 +1,7 @@
 <div class="shadow rounded-xl bg-white p-4">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0">
-    <mat-tab label="General">
-      <app-general/>
+    <mat-tab label="General" #generalTab>
+      <app-general [active]="generalTab.isActive"/>
     </mat-tab>
     <mat-tab label="PPM">
       <app-ppm/>
@@ -9,8 +9,8 @@
     <mat-tab label="UART">
       <app-uart/>
     </mat-tab>
-    <mat-tab label="Bluetooth">
-      <app-bluetooth/>
+    <mat-tab label="Bluetooth" #btTab>
+      <app-bluetooth [active]="btTab.isActive"/>
     </mat-tab>
     <mat-tab label="PWM">
       <app-pwm/>

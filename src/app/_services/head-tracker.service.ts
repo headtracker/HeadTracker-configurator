@@ -2,7 +2,7 @@ import { inject, Injectable, OnDestroy, signal, WritableSignal } from '@angular/
 import { ConnectionService } from './connection.service';
 import { filterCmds, HeadTracker } from '@libs/headtracker/HeadTracker';
 import { BehaviorSubject, filter, tap } from 'rxjs';
-import { Messages } from '@libs/headtracker/Messages';
+import {  Messages } from '@libs/headtracker/Messages';
 import { SubSink } from 'subsink';
 
 @Injectable({
@@ -79,6 +79,13 @@ export class HeadTrackerService implements OnDestroy {
     return this.tracker.$messages;
   }
 
+  get $dataMessages() {
+    return this.tracker.$messages.pipe(
+      filter(filterCmds),
+      filter((message): message is Messages.Data => message.Cmd === 'Data'),
+    );
+  }
+
   public async openConnection() {
     if (this.connectionService.port) {
       await this.initConnection(this.connectionService.port)
@@ -125,6 +132,28 @@ export class HeadTrackerService implements OnDestroy {
   public async stopSendingAll() {
     if (this.connected) {
       await this.tracker.sendCommand('D--');
+    }
+  }
+
+  public async readValues(input: (keyof Messages.Data)[]) {
+    if (this.connected) {
+      const values: any = {}
+      input.forEach((key) => {
+        values[key] = true;
+      })
+
+      await this.tracker.sendCommand('RD', values);
+    }
+  }
+
+  public async stopReadingValues(input: (keyof Messages.Data)[]) {
+    if (this.connected) {
+      const values: any = {}
+      input.forEach((key) => {
+        values[key] = false;
+      })
+
+      await this.tracker.sendCommand('RD', values);
     }
   }
 

@@ -14,6 +14,11 @@ export namespace Messages {
     panoff: number;
     tiltoff: number;
     rolloff: number;
+    btaddr?: string;
+    btcon?: boolean;
+    btrmt?: string;
+    ['6btaddrchr']?: string;
+    ['6btrmtchr']?: string;
   }
 
   export interface Get {
