@@ -7,12 +7,12 @@ import { filterCmds } from '@libs/headtracker/HeadTracker';
 import { Messages } from '@libs/headtracker/Messages';
 
 @Component({
-  selector: 'app-ppm',
+  selector: 'app-uart',
   standalone: true,
   imports: [ChannelComponent],
-  templateUrl: './ppm.component.html',
+  templateUrl: './uart.component.html',
 })
-export class PpmComponent implements OnDestroy{
+export class UartComponent implements OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private subs = new SubSink();
 
@@ -21,17 +21,17 @@ export class PpmComponent implements OnDestroy{
   @Input('active')
   set active(value: boolean) {
     if (value) {
-      this.HTService.readValues(['ppmch']).then();
+      this.HTService.readValues(['uartch']).then();
     } else {
-      this.HTService.stopReadingValues(['ppmch']).then();
+      this.HTService.stopReadingValues(['uartch']).then();
     }
   }
 
   constructor() {
     // When the board connects, read the values
     effect(() => {
-      if(this.HTService.connected()) {
-        this.HTService.readValues(['ppmch']).then();
+      if (this.HTService.connected()) {
+        this.HTService.readValues(['uartch']).then();
       }
     });
 
@@ -41,9 +41,9 @@ export class PpmComponent implements OnDestroy{
         filter((message): message is Messages.Data => message.Cmd === 'Data'),
       )
       .subscribe((message) => {
-        const ppmch = message['6ppmchu16'];
-        if (ppmch) {
-          const bytes = Uint8Array.from(atob(ppmch), (m) => m.codePointAt(0)!);
+        const uartch = message['6uartchu16'];
+        if (uartch) {
+          const bytes = Uint8Array.from(atob(uartch), (m) => m.codePointAt(0)!);
           const bytes16 = new Uint16Array(bytes.buffer);
           this.channels.set(bytes16);
         }
@@ -52,6 +52,6 @@ export class PpmComponent implements OnDestroy{
 
   ngOnDestroy() {
     this.subs.unsubscribe();
-    this.HTService.stopReadingValues(['ppmch']).then();
+    this.HTService.stopReadingValues(['uartch']).then();
   }
 }

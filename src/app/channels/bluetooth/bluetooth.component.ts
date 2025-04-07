@@ -7,31 +7,31 @@ import { filterCmds } from '@libs/headtracker/HeadTracker';
 import { Messages } from '@libs/headtracker/Messages';
 
 @Component({
-  selector: 'app-ppm',
+  selector: 'app-bluetooth',
   standalone: true,
   imports: [ChannelComponent],
-  templateUrl: './ppm.component.html',
+  templateUrl: './bluetooth.component.html',
 })
-export class PpmComponent implements OnDestroy{
+export class BluetoothComponent implements OnDestroy {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private subs = new SubSink();
 
-  channels = signal<Uint16Array>(new Uint16Array(16));
+  channels = signal<Uint16Array>(new Uint16Array(8));
 
   @Input('active')
   set active(value: boolean) {
     if (value) {
-      this.HTService.readValues(['ppmch']).then();
+      this.HTService.readValues(['btch']).then();
     } else {
-      this.HTService.stopReadingValues(['ppmch']).then();
+      this.HTService.stopReadingValues(['btch']).then();
     }
   }
 
   constructor() {
     // When the board connects, read the values
     effect(() => {
-      if(this.HTService.connected()) {
-        this.HTService.readValues(['ppmch']).then();
+      if (this.HTService.connected()) {
+        this.HTService.readValues(['btch']).then();
       }
     });
 
@@ -41,9 +41,9 @@ export class PpmComponent implements OnDestroy{
         filter((message): message is Messages.Data => message.Cmd === 'Data'),
       )
       .subscribe((message) => {
-        const ppmch = message['6ppmchu16'];
-        if (ppmch) {
-          const bytes = Uint8Array.from(atob(ppmch), (m) => m.codePointAt(0)!);
+        const btch = message['6btchu8'];
+        if (btch) {
+          const bytes = Uint8Array.from(atob(btch), (m) => m.codePointAt(0)!);
           const bytes16 = new Uint16Array(bytes.buffer);
           this.channels.set(bytes16);
         }
@@ -52,6 +52,6 @@ export class PpmComponent implements OnDestroy{
 
   ngOnDestroy() {
     this.subs.unsubscribe();
-    this.HTService.stopReadingValues(['ppmch']).then();
+    this.HTService.stopReadingValues(['btch']).then();
   }
 }

@@ -7,19 +7,25 @@ import { Constants } from '@libs/headtracker/Settings';
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="rounded-md h-5 bg-gray-700 text-white w-full text-center flex flex-row justify-center font-mono relative">
-      <div [style.width]="width + '%'" class="absolute h-5 top-0 left-0 rounded-md"
-           [class]="'bg-channel-'+channel"></div>
-      <span class="z-50">Ch {{ channel }} {{ _value }}</span>
+    <div
+      class="rounded-md h-5 bg-gray-700 text-white w-full text-center flex flex-row justify-center font-mono relative"
+    >
+      <div
+        [style.width]="width + '%'"
+        class="absolute h-5 top-0 left-0 rounded-md"
+        [class]="'bg-channel-' + channel"
+      ></div>
+      <span class="z-50">Ch {{ channel }} {{ _value !== 0 ? _value : '---' }}</span>
     </div>
   `,
 })
 export class ChannelComponent {
   @Input('channel') channel: string = '1';
+
   @Input('value')
-  set value(val: number){
-    if(!val) {
-      this._value = Constants.PPM_CENTER;
+  set value(val: number) {
+    if (!val) {
+      this._value = 0;
     } else {
       this._value = val;
     }
@@ -28,6 +34,7 @@ export class ChannelComponent {
   _value: number = Constants.PPM_CENTER;
 
   get width() {
-      return ((this._value - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM)) * 100;
+    if (this._value === 0) return 0;
+    return ((this._value - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM)) * 100;
   }
 }

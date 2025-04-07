@@ -22,6 +22,12 @@ export namespace Messages {
     gyrocal?: boolean;
     chout?: number;
     ['6choutu16']: string;
+    btch?: number;
+    ['6btchu8']: string;
+    ppmch?: number;
+    ['6ppmchu16']: string;
+    uartch?: number;
+    ['6uartchu16']: string;
   }
 
   export interface Get {

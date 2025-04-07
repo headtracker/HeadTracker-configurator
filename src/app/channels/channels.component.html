@@ -3,14 +3,14 @@
     <mat-tab label="Channel Outputs" #outputsTab>
       <app-outputs [active]="outputsTab.isActive"/>
     </mat-tab>
-    <mat-tab label="PPM Inputs">
-      <app-ppm/>
+    <mat-tab label="PPM Inputs" #ppmTab>
+      <app-ppm [active]="ppmTab.isActive"/>
     </mat-tab>
-    <mat-tab label="UART Inputs">
-      <app-uart/>
+    <mat-tab label="UART Inputs" #uartTab>
+      <app-uart [active]="uartTab.isActive"/>
     </mat-tab>
-    <mat-tab label="Bluetooth Inputs">
-      <app-bluetooth/>
+    <mat-tab label="Bluetooth Inputs" #btTab>
+      <app-bluetooth [active]="btTab.isActive"/>
     </mat-tab>
   </mat-tab-group>
 </div>
