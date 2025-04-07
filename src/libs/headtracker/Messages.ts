@@ -20,6 +20,8 @@ export namespace Messages {
     ['6btaddrchr']?: string;
     ['6btrmtchr']?: string;
     gyrocal?: boolean;
+    chout?: number;
+    ['6choutu16']: string;
   }
 
   export interface Get {

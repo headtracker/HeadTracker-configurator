@@ -14,6 +14,7 @@ import { debounceTime, filter, throttleTime } from 'rxjs';
   templateUrl: './bluetooth.component.html',
 })
 export class BluetoothComponent implements OnDestroy {
+  private textDecoder = new TextDecoder();
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);
   private formBuilder = inject(FormBuilder);
   private subs = new SubSink();
@@ -52,7 +53,13 @@ export class BluetoothComponent implements OnDestroy {
     });
 
     this.subs.sink = this.HTService.$dataMessages.subscribe((message) => {
-      '6btaddrchr' in message && this.btaddrchr.set(message['6btaddrchr']!);
+      const btaddr = message['6btaddrchr'];
+      if (btaddr) {
+        const bytes = Uint8Array.from(atob(btaddr), (m) => m.codePointAt(0)!);
+        const addr = this.textDecoder.decode(bytes);
+        this.btaddrchr.set(addr);
+      }
+
       '6btrmtchr' in message && this.btrmtchr.set(message['6btrmtchr']!);
       'btcon' in message && this.btcon.set(message.btcon!);
     });
@@ -77,5 +84,6 @@ export class BluetoothComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.HTService.stopReadingValues(['btaddr', 'btcon', 'btrmt']).then();
   }
 }

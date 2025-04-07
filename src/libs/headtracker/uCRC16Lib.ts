@@ -50,4 +50,20 @@ export class uCRC16Lib {
     // crc = (crc << 8) | (data >> 8 & 0xFF);
     return crc;
   }
+
+  public static escapeCRC(crc: any) {
+    // Characters to escape out
+    let crclow = crc & 0xFF;
+    let crchigh = (crc >> 8) & 0xFF;
+
+    if (crclow === 0x00 || crclow === 0x02 || crclow === 0x03 || crclow === 0x06 || crclow === 0x15) {
+      crclow ^= 0xFF;
+    }
+
+    if (crchigh === 0x00 || crchigh === 0x02 || crchigh === 0x03 || crchigh === 0x06 || crchigh === 0x15) {
+      crchigh ^= 0xFF;
+    }
+
+    return (crclow | (crchigh << 8)) >>> 0; // Ensure the result is treated as an unsigned 16-bit integer
+  }
 }

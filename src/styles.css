@@ -38,3 +38,67 @@ mat-sidenav {
 .ht-navitem.active {
     @apply opacity-100 bg-slate-600;
 }
+
+.bg-channel-1 {
+    background-color: #f1453d;
+}
+
+.bg-channel-2 {
+    background-color: #673fb4;
+}
+
+.bg-channel-3 {
+  background-color: #2b98f0;
+}
+
+.bg-channel-4 {
+  background-color: #1fbcd2;
+}
+
+.bg-channel-5 {
+  background-color: #159588;
+}
+
+.bg-channel-6 {
+  background-color: #50ae55;
+}
+
+.bg-channel-7 {
+  background-color: #cdda49;
+}
+
+.bg-channel-8 {
+  background-color: #fdc02f;
+}
+
+.bg-channel-9 {
+  background-color: #fc5830;
+}
+
+.bg-channel-10 {
+  background-color: #785549;
+}
+
+.bg-channel-11 {
+  background-color: #9e9e9e;
+}
+
+.bg-channel-12 {
+  background-color: #617d8a;
+}
+
+.bg-channel-13 {
+  background-color: #cf267d;
+}
+
+.bg-channel-14 {
+  background-color: #7a1464;
+}
+
+.bg-channel-15 {
+  background-color: #3a7a14;
+}
+
+.bg-channel-16 {
+  background-color: #14407a;
+}

@@ -111,7 +111,7 @@ export class HeadTracker {
 
     const encoder = new TextEncoder();
 
-    const CRC16 = uCRC16Lib.calculateFromString(cmdString);
+    const CRC16 = uCRC16Lib.escapeCRC(uCRC16Lib.calculateFromString(cmdString));
     let crcArray = new Uint8Array(2);
     crcArray[0] = CRC16 & 0xff;
     crcArray[1] = (CRC16 >> 8) & 0xff;
