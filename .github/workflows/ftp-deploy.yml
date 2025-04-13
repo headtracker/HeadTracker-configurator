@@ -1,4 +1,4 @@
-name: 🚀 Deploy website on push via ftp to app.headtracker.net
+name: Deploy website via ftp to app.headtracker.net
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main  # Change this to your default branch if it's not 'main'
 jobs:
   build:
-    name: 🏗️ Build and 🎉 Deploy
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular project
-        run: npm run build -- --deploy-url=https://app.headtracker.net
+        run: npm run build -- --deploy-url=https://app.headtracker.net/
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
