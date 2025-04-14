@@ -1,4 +1,4 @@
-<div class="shadow rounded-xl bg-white p-4">
+<div class="shadow rounded-lg bg-white p-2">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0">
     <mat-tab label="General" #generalTab>
       <app-general [active]="generalTab.isActive"/>
@@ -22,12 +22,12 @@
 </div>
 
 
-<div class="shadow rounded-xl bg-white p-6 mt-4">
-  <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4"> IMU Output - Local Board</div>
+<div class="shadow rounded-lg bg-white px-3 py-2 mt-2">
+  <div class="truncate text-md font-medium leading-6 tracking-tight mb-4"> IMU Output - Local Board</div>
   <app-imu/>
 </div>
-<div class="shadow rounded-xl bg-white p-6 mt-4">
-  <div class="truncate text-lg font-medium leading-6 tracking-tight"> Graph - Local Board</div>
+<div class="shadow rounded-lg bg-white px-3 py-2 mt-2">
+  <div class="truncate text-md font-medium leading-6 tracking-tight"> Graph - Local Board</div>
   <app-output/>
 </div>
 

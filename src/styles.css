@@ -2,17 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-size: 14px
+}
 
 :root {
-  --mat-form-field-container-height: 38px;
-  --mat-form-field-container-vertical-padding: 8px;
+  --mat-form-field-container-height: 24px;
+  --mat-form-field-container-vertical-padding: 4px;
   --mdc-slider-inactive-track-color: #5b9a17;
+
+  --mat-select-trigger-text-line-height: 1.25rem;
+  --mat-select-trigger-text-size: 0.75rem;
+  --mat-select-trigger-text-tracking: 0.031rem;
+
+  --mat-form-field-container-text-line-height: 1.25rem;
+  --mat-form-field-container-text-size: 0.75rem;
+
+  --mdc-outlined-text-field-label-text-size: 0.75rem;
+
   --mat-toolbar-standard-height: 58px;
   --mat-toolbar-mobile-height: 52px;
+/*  Button   */
+  --mdc-protected-button-container-height: 32px;
+  --mdc-filled-button-container-height: 32px;
+/*  Checkbox  */
+  --mdc-checkbox-state-layer-size: 32px;
+/*  Tabs  */
+  --mdc-secondary-navigation-tab-container-height: 34px;
 }
 
 .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-notch-piece.mdc-notched-outline__notch {
   border-right-width: 0px !important;
+}
+
+.mat-mdc-select-arrow-wrapper {
+  height: 16px !important;
+}
+
+.mdc-tab {
+  min-width: 75px !important;
+  padding: 0 12px !important;
 }
 
 
@@ -26,12 +55,12 @@ mat-sidenav-container {
 mat-sidenav {
     @apply bg-slate-800 !important;
     @apply rounded-none !important;
-    @apply w-72 !important;
+    @apply w-60 !important;
 }
 
 .ht-navitem {
     @apply hover:bg-slate-700 flex flex-row items-center hover:opacity-100;
-    @apply w-full py-2 px-4 border rounded-lg border-slate-500 hover:border-slate-200;
+    @apply w-full py-1 px-4 border rounded-lg border-slate-500 hover:border-slate-200;
     @apply text-white font-medium text-sm;
 }
 

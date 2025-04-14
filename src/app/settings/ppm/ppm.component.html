@@ -1,6 +1,6 @@
-<form [formGroup]="form" class="flex flex-col p-4 gap-4">
-  <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">Pulse Position Modulation (PPM) - Output</div>
-  <div class="flex flex-row gap-4">
+<form [formGroup]="form" class="flex flex-col p-2 gap-2">
+  <div class="truncate text-md font-medium leading-6 tracking-tight mb-2">Pulse Position Modulation (PPM) - Output</div>
+  <div class="flex flex-row gap-2">
     <mat-form-field appearance="outline">
       <mat-label>PPM Output Pin</mat-label>
       <mat-select formControlName="ppmoutpin">
@@ -17,12 +17,12 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="flex flex-row gap-4">
-    <mat-checkbox formControlName="ppmoutinvert" class="-ml-3">
+  <div class="flex flex-row gap-2">
+    <mat-checkbox formControlName="ppmoutinvert" class="-ml-1">
       Invert
     </mat-checkbox>
   </div>
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-row gap-2">
     <mat-form-field appearance="outline">
       <mat-label>Frame Length</mat-label>
       <input matInput formControlName="ppmframe"
@@ -46,8 +46,8 @@
   </div>
 
   <hr>
-  <div class="truncate text-lg font-medium leading-6 tracking-tight mb-4">Pulse Position Modulation (PPM) - Input</div>
-  <div class="flex flex-row gap-4">
+  <div class="truncate text-md font-medium leading-6 tracking-tight mb-2">Pulse Position Modulation (PPM) - Input</div>
+  <div class="flex flex-row gap-2">
     <mat-form-field appearance="outline">
       <mat-label>PPM Input Pin</mat-label>
       <mat-select formControlName="ppminpin">
@@ -56,8 +56,8 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="flex flex-row gap-4">
-    <mat-checkbox formControlName="ppmininvert" class="-ml-3">
+  <div class="flex flex-row gap-2">
+    <mat-checkbox formControlName="ppmininvert" class="-ml-1">
       Invert
     </mat-checkbox>
   </div>

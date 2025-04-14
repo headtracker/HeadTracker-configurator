@@ -10,7 +10,7 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [MatButton, MatIcon, AsyncPipe],
   templateUrl: './footer.component.html',
-  host: { class: 'shadow-inner border bg-white p-4 flex flex-row items-center justify-between sticky w-full bottom-0 mt-auto z-40' },
+  host: { class: 'shadow-inner border bg-white p-2 flex flex-row items-center justify-between sticky w-full bottom-0 mt-auto z-40' },
 })
 export class FooterComponent {
   readonly HTService: HeadTrackerService = inject(HeadTrackerService);

@@ -1,7 +1,7 @@
 {
-  "name": "headtracker-webui",
-  "short_name": "headtracker-webui",
-  "theme_color": "#1976d2",
+  "name": "HeadTracker Configurator",
+  "short_name": "HeadTracker",
+  "theme_color": "#818cf8",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
