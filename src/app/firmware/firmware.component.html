@@ -5,7 +5,7 @@
     <input class="hidden" #fileInput type="file" accept=".bin" (change)="selectFirmwareFile($event)"/>
 
     <span class="text-lg font-medium leading-6 tracking-tight">Firmware: {{ filename }}</span>
-    <span class="text-sm font-medium text-green-700">Size: {{ fileSize }} bites</span>
+    <span class="text-sm font-medium text-green-700">Size: {{ fileSize }} bytes</span>
     <button class="mt-4" [disabled]="!canFlash" (click)="flashFirmware()" mat-stroked-button>Flash firmware</button>
     <span class="text-sm font-medium text-red-500" *ngIf="connectionService.port === null">
       Select port first
