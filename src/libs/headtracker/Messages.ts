@@ -119,4 +119,60 @@ export namespace Messages {
     ppmoutpin: number;
     ppminpin: number;
   }
+
+  export enum Feature {
+    Magnetometer = "MAG",
+    IMU = "IMU",
+    ProximitySensor = "PROXIMITY",
+    CenterButton = "CENTER",
+    PPMInput = "PPMIN",
+    PPMOutput = "PPMOUT",
+    PWM4Channel = "PWM4CH",
+    Analog4Channel = "AN4CH",
+    AuxiliarySerial = "AUXSERIAL",
+    LED = "LED",
+    RGB = "RGB",
+    Bluetooth = "BT",
+    BluetoothJoystick = "BTJOYSTICK",
+    Joystick = "JOYSTICK",
+  }
+
+  export interface FE {
+    Cmd: "FE";
+    FEAT: Feature[];
+    PINS: {
+      AN0: string;
+      AN1: string;
+      AN2: string;
+      AN3: string;
+      APDSINT: string;
+      BMI270INT1: string;
+      BMI270INT2: string;
+      CENTER_BTN: string;
+      D2: string;
+      D4: string;
+      D7: string;
+      D8: string;
+      D11: string;
+      D12: string;
+      I2C_PU: string;
+      LED: string;
+      LEDB: string;
+      LEDG: string;
+      LEDR: string;
+      PPMIN: string;
+      PPMOUT: string;
+      PWM0: string;
+      PWM1: string;
+      PWM2: string;
+      PWM3: string;
+      PWR: string;
+      RX: string
+      RXINVI: string;
+      RXINVO: string;
+      TX: string;
+      TXINV: string;
+      VDDENA: string;
+    }
+  }
 }

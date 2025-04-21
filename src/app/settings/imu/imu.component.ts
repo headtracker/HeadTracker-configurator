@@ -11,7 +11,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { TriSlider, TriSliderRangeThumb } from '@libs/tri-slider';
 import { Constants } from '@libs/headtracker/Settings';
 import { SubSink } from 'subsink';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -33,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
+    NgIf,
   ],
   templateUrl: './imu.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -48,7 +49,7 @@ import { MatMenuModule } from '@angular/material/menu';
       left: 0;
       display: block;
       height: 0px;
-      margin: 0 3px
+      margin: 0 3px;
     }
 
     .triangle .marker {
@@ -77,14 +78,26 @@ export class ImuComponent implements OnInit, OnDestroy {
   panout = signal(0);
 
   tiltoutPercent = computed(() => {
-    return Math.round(((this.tiltout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
-  })
+    return (
+      Math.round(
+        ((this.tiltout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000,
+      ) / 100
+    );
+  });
   rolloutPercent = computed(() => {
-    return Math.round(((this.rollout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
-  })
+    return (
+      Math.round(
+        ((this.rollout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000,
+      ) / 100
+    );
+  });
   panoutPercent = computed(() => {
-    return Math.round(((this.panout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
-  })
+    return (
+      Math.round(
+        ((this.panout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000,
+      ) / 100
+    );
+  });
 
   axisForm = this.formBuilder.group({
     rll_min: [Constants.DEF_MIN_PWM],

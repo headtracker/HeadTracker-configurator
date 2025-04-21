@@ -3,12 +3,18 @@
   <div class="flex flex-row items-center gap-2">
     <div class="w-56">Center button</div>
     <div>
-      <mat-form-field appearance="outline">
-        <mat-select formControlName="buttonpin">
-          <mat-option [value]="-1">Off</mat-option>
-          <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      @if (HTService.pins.has('CENTER_BTN')) {
+        <div class="h-7 leading-7">
+          <span class="font-bold">{{ HTService.pins.get('CENTER_BTN') }}</span>
+        </div>
+      } @else {
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="buttonpin">
+            <mat-option [value]="-1">Off</mat-option>
+            <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
     </div>
   </div>
   <!--  Send recenter on Channel-->
@@ -50,7 +56,7 @@
         <mat-label>Roll (Y)</mat-label>
         <input formControlName="roty" matInput type="number" max="360" min="-360" step="1">
       </mat-form-field>
-      <mat-form-field  class="w-24" appearance="outline">
+      <mat-form-field class="w-24" appearance="outline">
         <mat-label>Pan (Z)</mat-label>
         <input formControlName="rotz" matInput type="number" max="360" min="-360" step="1">
       </mat-form-field>

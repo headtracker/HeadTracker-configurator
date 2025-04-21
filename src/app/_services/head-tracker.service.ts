@@ -1,8 +1,8 @@
-import { inject, Injectable, OnDestroy, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { ConnectionService } from './connection.service';
 import { filterCmds, HeadTracker } from '@libs/headtracker/HeadTracker';
 import { BehaviorSubject, filter, tap } from 'rxjs';
-import {  Messages } from '@libs/headtracker/Messages';
+import { Messages } from '@libs/headtracker/Messages';
 import { SubSink } from 'subsink';
 import { NotificationsService } from '@app/_services/notifications.service';
 
@@ -20,6 +20,8 @@ export class HeadTrackerService implements OnDestroy {
   public firmwareVersion?: string;
   public hardwareVersion?: string;
   public gitVersion?: string;
+  public features: Set<Messages.Feature> = new Set();
+  public pins: Map<keyof Messages.FE['PINS'], string> = new Map();
 
   private boardValuesSubject = new BehaviorSubject<Partial<Messages.Get>>({});
   public $boardValues = this.boardValuesSubject.asObservable();
@@ -28,8 +30,7 @@ export class HeadTrackerService implements OnDestroy {
     this.subs.sink = this.connectionService.$connectedPort.subscribe(async (port) => {
       if (port) {
         // Only connect if the port is the one we want, don't want to connect if it's in bootloader mode
-        if (port.getInfo().usbProductId === 0x805a)
-          await this.initConnection(port);
+        if (port.getInfo().usbProductId === 0x805a) await this.initConnection(port);
       } else {
         await this.closeConnection();
       }
@@ -38,34 +39,58 @@ export class HeadTrackerService implements OnDestroy {
 
   private async initConnection(port: SerialPort) {
     await this.tracker.connect(port);
-    this.connected.set(true)
+    this.connected.set(true);
 
     this.messageSubs.sink = this.$messages.subscribe((message) => {
       // console.info('Received message:', message);
     });
 
     // Get the firmware version
-    this.messageSubs.sink = this.$messages.pipe(
-      filter(filterCmds),
-      filter((message): message is Messages.FW => message.Cmd === 'FW'),
-      tap(console.info),
-    ).subscribe((message) => {
-      this.firmwareVersion = message.Vers;
-      this.hardwareVersion = message.Hard;
-      this.gitVersion = message.Git;
-    });
+    this.messageSubs.sink = this.$messages
+      .pipe(
+        filter(filterCmds),
+        filter((message): message is Messages.FW => message.Cmd === 'FW'),
+        tap(console.info),
+      )
+      .subscribe((message) => {
+        this.firmwareVersion = message.Vers;
+        this.hardwareVersion = message.Hard;
+        this.gitVersion = message.Git;
+      });
 
     // Get the board values
-    this.messageSubs.sink = this.$messages.pipe(
-      filter(filterCmds),
-      filter((message): message is Messages.Get => message.Cmd === 'Set'),
-      tap(console.info),
-    ).subscribe((message) => {
-      this.boardValuesSubject.next(message)
-    });
+    this.messageSubs.sink = this.$messages
+      .pipe(
+        filter(filterCmds),
+        filter((message): message is Messages.Get => message.Cmd === 'Set'),
+        tap(console.info),
+      )
+      .subscribe((message) => {
+        this.boardValuesSubject.next(message);
+      });
+
+    // Get the board features
+    this.messageSubs.sink = this.$messages
+      .pipe(
+        filter(filterCmds),
+        filter((message): message is Messages.FE => message.Cmd === 'FE'),
+        tap(console.info),
+      )
+      .subscribe((message: Messages.FE) => {
+        message.FEAT.forEach((feature) => {
+          this.features.add(feature as Messages.Feature);
+        });
+        Object.entries(message.PINS).forEach(([key,value]) => {
+          this.pins.set(key as keyof Messages.FE['PINS'], value);
+        })
+        console.info('Features:', this.features);
+        console.info('Pins:', this.pins);
+      });
+
 
     await this.tracker.sendCommand('FW');
     await this.tracker.sendCommand('Get');
+    await this.tracker.sendCommand('FE');
     await this.tracker.sendCommand('RD', {
       panout: true,
       rollout: true,
@@ -76,7 +101,6 @@ export class HeadTrackerService implements OnDestroy {
     });
 
     this.notifications.push('Head Tracker Connected');
-
   }
 
   get $messages() {
@@ -92,7 +116,7 @@ export class HeadTrackerService implements OnDestroy {
 
   public async openConnection() {
     if (this.connectionService.port) {
-      await this.initConnection(this.connectionService.port)
+      await this.initConnection(this.connectionService.port);
     } else {
       console.error('No port available to connect to.');
     }
@@ -103,6 +127,8 @@ export class HeadTrackerService implements OnDestroy {
     this.messageSubs.unsubscribe();
     this.connected.set(false);
     this.notifications.push('Connection closed to Head Tracker');
+    this.features.clear();
+    this.pins.clear();
   }
 
   public async resetCenter() {
@@ -145,10 +171,10 @@ export class HeadTrackerService implements OnDestroy {
 
   public async readValues(input: (keyof Messages.Data)[]) {
     if (this.connected()) {
-      const values: any = {}
+      const values: any = {};
       input.forEach((key) => {
         values[key] = true;
-      })
+      });
 
       await this.tracker.sendCommand('RD', values);
     }
@@ -156,10 +182,10 @@ export class HeadTrackerService implements OnDestroy {
 
   public async stopReadingValues(input: (keyof Messages.Data)[]) {
     if (this.connected()) {
-      const values: any = {}
+      const values: any = {};
       input.forEach((key) => {
         values[key] = false;
-      })
+      });
 
       await this.tracker.sendCommand('RD', values);
     }

@@ -29,7 +29,7 @@
         <input formControlName="tlt_cnt" triSliderMidThumb>
         <input formControlName="tlt_max" triSliderEndThumb>
       </tri-slider>
-      <div class="triangle">
+      <div class="triangle" *ngIf="tiltout() !== 0">
         <div class="marker" [style.left]="'calc(' + tiltoutPercent()+ '%)'"></div>
       </div>
     </div>
@@ -79,7 +79,7 @@
         <input formControlName="rll_cnt" triSliderMidThumb>
         <input formControlName="rll_max" triSliderEndThumb>
       </tri-slider>
-      <div class="triangle">
+      <div class="triangle" *ngIf="rollout() !== 0">
         <div class="marker" [style.left]="'calc(' + rolloutPercent()+ '%)'"></div>
       </div>
     </div>
@@ -127,7 +127,7 @@
         <input formControlName="pan_cnt" triSliderMidThumb>
         <input formControlName="pan_max" triSliderEndThumb>
       </tri-slider>
-      <div class="triangle">
+      <div class="triangle"  *ngIf="panout() !== 0">
         <div class="marker" [style.left]="'calc(' + panoutPercent()+ '%)'"></div>
       </div>
     </div>

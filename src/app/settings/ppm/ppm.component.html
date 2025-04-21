@@ -1,13 +1,20 @@
 <form [formGroup]="form" class="flex flex-col p-2 gap-2">
   <div class="truncate text-md font-medium leading-6 tracking-tight mb-2">Pulse Position Modulation (PPM) - Output</div>
   <div class="flex flex-row gap-2">
-    <mat-form-field appearance="outline">
-      <mat-label>PPM Output Pin</mat-label>
-      <mat-select formControlName="ppmoutpin">
-        <mat-option [value]="-1">Off</mat-option>
-        <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (HTService.pins.has('PPMOUT')) {
+      <div class="w-56 h-7 leading-7">
+        PPM Output pin: <span class="font-bold">{{ HTService.pins.get('PPMOUT') }}</span>
+      </div>
+    } @else {
+      <mat-form-field appearance="outline">
+        <mat-label>PPM Output Pin</mat-label>
+        <mat-select formControlName="ppmoutpin">
+          <mat-option [value]="-1">Off</mat-option>
+          <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+
     <mat-form-field class="w-64" appearance="outline">
       <mat-label>Number of Channels to Output</mat-label>
       <mat-select formControlName="ppmchcnt">
@@ -48,13 +55,19 @@
   <hr>
   <div class="truncate text-md font-medium leading-6 tracking-tight mb-2">Pulse Position Modulation (PPM) - Input</div>
   <div class="flex flex-row gap-2">
-    <mat-form-field appearance="outline">
-      <mat-label>PPM Input Pin</mat-label>
-      <mat-select formControlName="ppminpin">
-        <mat-option [value]="-1">Off</mat-option>
-        <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (HTService.pins.has('PPMIN')) {
+      <div class="w-56 h-7 leading-7">
+        PPM Input pin: <span class="font-bold">{{ HTService.pins.get('PPMIN') }}</span>
+      </div>
+    } @else {
+      <mat-form-field appearance="outline">
+        <mat-label>PPM Input Pin</mat-label>
+        <mat-select formControlName="ppminpin">
+          <mat-option [value]="-1">Off</mat-option>
+          <mat-option *ngFor="let item of [].constructor(11); let i = index" [value]="i+2">D{{ i + 2 }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
   </div>
   <div class="flex flex-row gap-2">
     <mat-checkbox formControlName="ppmininvert" class="-ml-1">
