@@ -44,6 +44,15 @@ body {
   padding: 0 12px !important;
 }
 
+.mat-mdc-slider {
+  height: 42px !important;
+}
+
+.mdc-slider__thumb {
+  width: 42px !important;
+  height: 42px !important;
+}
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }

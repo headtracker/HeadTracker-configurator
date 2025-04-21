@@ -1,18 +1,18 @@
-<form [formGroup]="axisForm" class="flex flex-col">
-  <div class="flex flex-row content-between gap-6">
+<form [formGroup]="axisForm" class="flex flex-col pr-4">
+  <div class="flex flex-row content-between gap-4">
     <span class="w-8">&nbsp;</span>
     <div class="w-16  text-center">Value</div>
     <div class="w-2/12 text-center">Gain</div>
-    <div class="w-4/12 text-center">Range</div>
+    <div class="flex-grow text-center">Range</div>
     <div class="w-16 text-center -ml-4 ">&nbsp;</div>
-    <div class="w-32 text-center">Channel</div>
+    <div class="w-28 text-center">Channel</div>
     <div class="w-16 text-center">Reverse</div>
   </div>
   <!-- TILT -->
-  <div class="flex flex-row items-center gap-6">
-    <div class="w-8 text-right">Tilt</div>
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-8 shrink-0 text-right">Tilt</div>
     <!-- IMU value -->
-    <div class="w-16  text-center rounded-md border p-2">
+    <div class="w-16 shrink-0 text-center rounded-md border px-2 py-1">
       <span class=" whitespace-nowrap">{{ tilt() }} &deg;</span>
     </div>
     <!-- Gain slider -->
@@ -23,16 +23,19 @@
     </div>
 
     <!-- Range selector -->
-    <div class="w-4/12 flex flex-col">
+    <div class="flex-grow flex flex-col relative">
       <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
         <input formControlName="tlt_min" triSliderStartThumb>
         <input formControlName="tlt_cnt" triSliderMidThumb>
         <input formControlName="tlt_max" triSliderEndThumb>
       </tri-slider>
+      <div class="triangle">
+        <div class="marker" [style.left]="'calc(' + tiltoutPercent()+ '%)'"></div>
+      </div>
     </div>
-    <div class="w-16 text-center -ml-4 ">
-      <button mat-mini-fab [matMenuTriggerFor]="tlt_menu">
-        <mat-icon>settings_input_composite</mat-icon>
+    <div class="w-16 text-center -ml-4">
+      <button class="!size-8" mat-mini-fab [matMenuTriggerFor]="tlt_menu">
+        <mat-icon style="font-size: 18px; line-height: 24px">settings_input_composite</mat-icon>
       </button>
       <mat-menu #tlt_menu="matMenu">
         <button mat-menu-item (click)="defaultValues('tilt')">Default values</button>
@@ -43,7 +46,7 @@
 
 
     <!-- Channel selector -->
-    <mat-form-field class="w-32 px-4" appearance="outline">
+    <mat-form-field class="w-28 px-4" appearance="outline">
       <mat-select formControlName="tltch">
         <mat-option [value]="-1">Off</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
@@ -56,10 +59,10 @@
     </div>
   </div>
   <!--  ROLL -->
-  <div class="flex flex-row items-center gap-6">
-    <div class="w-8 text-right">Roll</div>
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-8 shrink-0 text-right">Roll</div>
     <!-- IMU value -->
-    <div class="w-16  text-center rounded-md border p-2">
+    <div class="w-16 shrink-0 text-center rounded-md border px-2 py-1">
       <span class=" whitespace-nowrap">{{ roll() }} &deg;</span>
     </div>
     <!-- Gain slider -->
@@ -70,16 +73,19 @@
     </div>
 
     <!-- Range selector -->
-    <div class="w-4/12 flex flex-col">
+    <div class="flex-grow flex flex-col relative">
       <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
         <input formControlName="rll_min" triSliderStartThumb>
         <input formControlName="rll_cnt" triSliderMidThumb>
         <input formControlName="rll_max" triSliderEndThumb>
       </tri-slider>
+      <div class="triangle">
+        <div class="marker" [style.left]="'calc(' + rolloutPercent()+ '%)'"></div>
+      </div>
     </div>
     <div class="w-16 text-center -ml-4 ">
-      <button mat-mini-fab [matMenuTriggerFor]="rll_menu">
-        <mat-icon>settings_input_composite</mat-icon>
+      <button class="!size-8"  mat-mini-fab [matMenuTriggerFor]="rll_menu">
+        <mat-icon style="font-size: 18px; line-height: 24px">settings_input_composite</mat-icon>
       </button>
       <mat-menu #rll_menu="matMenu">
         <button mat-menu-item (click)="defaultValues('roll')">Default values</button>
@@ -89,7 +95,7 @@
     </div>
 
     <!-- Channel selector -->
-    <mat-form-field class="w-32 px-4" appearance="outline">
+    <mat-form-field class="w-28 px-4" appearance="outline">
       <mat-select formControlName="rllch">
         <mat-option [value]="-1">Off</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>
@@ -102,10 +108,10 @@
     </div>
   </div>
   <!--  PAN -->
-  <div class="flex flex-row items-center gap-6">
-    <div class="w-8 text-right">Pan</div>
+  <div class="flex flex-row items-center gap-4">
+    <div class="w-8 shrink-0 text-right">Pan</div>
     <!-- IMU value -->
-    <div class="w-16 text-center rounded-md border p-2">
+    <div class="w-16 shrink-0  text-center rounded-md border px-2 py-1">
       <span class="whitespace-nowrap">{{ pan() }} &deg;</span>
     </div>
     <!-- Gain slider -->
@@ -115,16 +121,19 @@
       </mat-slider>
     </div>
     <!-- Range selector -->
-    <div class="w-4/12 flex flex-col">
+    <div class="flex-grow flex flex-col relative">
       <tri-slider discrete [min]="Constants.MIN_PWM" [max]="Constants.MAX_PWM" class="w-full">
         <input formControlName="pan_min" triSliderStartThumb>
         <input formControlName="pan_cnt" triSliderMidThumb>
         <input formControlName="pan_max" triSliderEndThumb>
       </tri-slider>
+      <div class="triangle">
+        <div class="marker" [style.left]="'calc(' + panoutPercent()+ '%)'"></div>
+      </div>
     </div>
     <div class="w-16 text-center -ml-4 ">
-      <button mat-mini-fab [matMenuTriggerFor]="pan_menu">
-        <mat-icon>settings_input_composite</mat-icon>
+      <button class="!size-8"  mat-mini-fab [matMenuTriggerFor]="pan_menu">
+        <mat-icon style="font-size: 18px; line-height: 24px">settings_input_composite</mat-icon>
       </button>
       <mat-menu #pan_menu="matMenu">
         <button mat-menu-item (click)="defaultValues('pan')">Default values</button>
@@ -134,7 +143,7 @@
     </div>
 
     <!-- Channel selector -->
-    <mat-form-field class="w-32 px-4" appearance="outline">
+    <mat-form-field class="w-28 px-4" appearance="outline">
       <mat-select formControlName="panch">
         <mat-option [value]="-1">Off</mat-option>
         <mat-option *ngFor="let item of [].constructor(16); let i = index" [value]="i+1">Ch{{ i + 1 }}</mat-option>

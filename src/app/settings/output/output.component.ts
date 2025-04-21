@@ -6,6 +6,7 @@ import { filterCmds } from '@libs/headtracker/HeadTracker';
 import { Messages } from '@libs/headtracker/Messages';
 import { differenceInMilliseconds } from 'date-fns';
 import { ChartOptions } from 'chart.js';
+import { Constants } from '@libs/headtracker/Settings';
 
 @Component({
   selector: 'app-output',
@@ -35,9 +36,9 @@ export class OutputComponent implements OnInit, OnDestroy {
       .subscribe((message) => {
         const timeDiff = differenceInMilliseconds(Date.now(), this.drawStart!);
 
-        this.panData.push({ x: timeDiff, y: message.panout });
-        this.tiltData.push({ x: timeDiff, y: message.tiltout });
-        this.rollData.push({ x: timeDiff, y: message.rollout });
+        this.panData.push({ x: timeDiff, y: message.panoff });
+        this.tiltData.push({ x: timeDiff, y: message.tiltoff });
+        this.rollData.push({ x: timeDiff, y: message.rolloff });
       });
 
     this.interval = setInterval(() => {
@@ -115,16 +116,16 @@ export class OutputComponent implements OnInit, OnDestroy {
       },
       y: {
         type: 'linear',
-        min: 1050,
-        max: 1950,
+        min: -180,
+        max: 180,
         ticks: {
-          stepSize: 150,
+          stepSize: 60,
           callback: (value: number | string) => {
-            if (typeof value === 'number') {
-              return ((value - 1050) / 900) * 360 - 180;
-            } else {
+            // if (typeof value === 'number') {
+            //   return ((value - Constants.MIN_PWM) / 900) * 360 - 180;
+            // } else {
               return value;
-            }
+            // }
           },
         },
       },

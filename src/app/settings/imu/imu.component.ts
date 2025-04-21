@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { HeadTrackerService } from '@app/_services/head-tracker.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, filter, startWith, throttleTime } from 'rxjs';
@@ -40,6 +40,26 @@ import { MatMenuModule } from '@angular/material/menu';
     .mat-mdc-form-field-subscript-wrapper {
       display: none;
     }
+
+    .triangle {
+      position: absolute;
+      top: 16px;
+      right: 15px;
+      left: 0;
+      display: block;
+      height: 0px;
+      margin: 0 3px
+    }
+
+    .triangle .marker {
+      pointer-events: none;
+      transform: rotateZ(45deg);
+      background-color: yellow;
+      border: 1px solid black;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+    }
   `,
 })
 export class ImuComponent implements OnInit, OnDestroy {
@@ -51,6 +71,20 @@ export class ImuComponent implements OnInit, OnDestroy {
   tilt = signal(0);
   roll = signal(0);
   pan = signal(0);
+
+  tiltout = signal(0);
+  rollout = signal(0);
+  panout = signal(0);
+
+  tiltoutPercent = computed(() => {
+    return Math.round(((this.tiltout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
+  })
+  rolloutPercent = computed(() => {
+    return Math.round(((this.rollout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
+  })
+  panoutPercent = computed(() => {
+    return Math.round(((this.panout() - Constants.MIN_PWM) / (Constants.MAX_PWM - Constants.MIN_PWM) + Number.EPSILON) * 10000) / 100;
+  })
 
   axisForm = this.formBuilder.group({
     rll_min: [Constants.DEF_MIN_PWM],
@@ -84,6 +118,9 @@ export class ImuComponent implements OnInit, OnDestroy {
         this.tilt.set(Math.round((message.tiltoff + Number.EPSILON) * 100) / 100);
         this.roll.set(Math.round((message.rolloff + Number.EPSILON) * 100) / 100);
         this.pan.set(Math.round((message.panoff + Number.EPSILON) * 100) / 100);
+        this.tiltout.set(message.tiltout);
+        this.rollout.set(message.rollout);
+        this.panout.set(message.panout);
       });
     // init board values from the board
     this.subs.sink = this.HTService.$boardValues.subscribe((message) => {
